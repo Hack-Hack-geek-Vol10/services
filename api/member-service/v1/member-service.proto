@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option go_package = "api/member-service/v1";
+
+package member.v1;
+
+service MemberService {
+    rpc AddMember(MemberRequest) returns (Member);
+    rpc ReadMembers(ReadMembersRequest) returns (ListMembers);
+    rpc UpdateAuthority(MemberRequest) returns (Member);
+    rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberResponse);
+}
+
+message MemberRequest {
+    string user_id = 1;
+    string project_id = 2;
+    string authority = 3;
+}
+
+message Member {
+    string user_id = 1;
+    string project_id = 2;
+    auth authority = 3;
+}
+
+message ReadMembersRequest {
+    string project_id = 1;
+}
+
+message ListMembers {
+    repeated Member members = 1;
+}
+
+message DeleteMemberRequest {
+    string user_id = 1;
+    string project_id = 2;
+}
+
+message DeleteMemberResponse {
+    string message = 1;
+}
+
+enum auth {
+    read_only = 0;
+    read_write = 1;
+    owner = 2;
+  }
