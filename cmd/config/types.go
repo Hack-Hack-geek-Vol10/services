@@ -10,6 +10,7 @@ type config struct {
 type Server struct {
 	UserAddr    string `env:"SERVER_ADDR" envDefault:":8081"`
 	ProjectAddr string `env:"SERVER_ADDR" envDefault:":8082"`
+	MemberAddr  string `env:"SERVER_ADDR" envDefault:":8083"`
 }
 
 type Database struct {

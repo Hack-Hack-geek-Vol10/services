@@ -10,3 +10,9 @@ type CreateUserParams struct {
 	Name   string `json:"name"`
 	Email  string `json:"email"`
 }
+
+type CreateMemberParam struct {
+	ProjectID string    `json:"project_id"`
+	UserID    string    `json:"user_id"`
+	Authority Authority `json:"authority"`
+}

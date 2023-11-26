@@ -1,20 +1,20 @@
-package service
+package services
 
 import (
 	"context"
 
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
-	storage "github.com/Hack-Hack-geek-Vol10/services/src/storages"
+	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
 	"github.com/google/uuid"
 )
 
 type projectService struct {
 	project.UnimplementedProjectServiceServer
-	projectRepo storage.ProjectRepo
+	projectRepo storages.ProjectRepo
 }
 
-func NewProjectService(projectRepo storage.ProjectRepo) project.ProjectServiceServer {
+func NewProjectService(projectRepo storages.ProjectRepo) project.ProjectServiceServer {
 	return &projectService{
 		projectRepo: projectRepo,
 	}

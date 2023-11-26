@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"context"
@@ -53,5 +53,3 @@ func (s *userService) GetUser(ctx context.Context, arg *user.GetUserParams) (*us
 		Email: userInfo.Email,
 	}, nil
 }
-
-func (s *userService) mustEmbedUnimplementedUserServiceServer() {}
