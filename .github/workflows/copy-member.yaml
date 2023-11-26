@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - 'pkg/grpc/member-service/**'
+    # paths:
+    #   - 'pkg/grpc/member-service/**'
 
 permissions:
   actions: write
