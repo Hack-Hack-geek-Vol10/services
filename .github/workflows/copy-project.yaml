@@ -37,7 +37,20 @@ jobs:
           repository: Hack-Hack-geek-Vol10/graph-gateway
           token: ${{ secrets.GH_PAT }}
           ref: develop
-              
+
+      - name: Set whether the branch is not existing to create branch
+        run: |
+          branch_is_existing=$(
+            git fetch origin ft/wfc-bff &&
+            echo true ||
+            echo false
+          )
+          if [ $branch_is_existing = 'false' ]; then
+            git branch ft/wfc-bff
+          else
+            echo "branch is existing"
+          fi
+      
       # switch repository to frontend
       - name: copy item to graph-gateway
         run: |
@@ -47,7 +60,7 @@ jobs:
           git switch -c ft/copy-grpc${{github.sha}}project
 
           cp -r $HOME/project-service/* pkg/grpc
-
+      
       - name: Commit and push changes
         run: |
           git add .
@@ -60,7 +73,7 @@ jobs:
             --title ":robot: copy grpc [bot]" \
             --body ":robot: copy grp[bot]" \
             --repo Hack-Hack-geek-Vol10/graph-gateway \
-            --base develop \
+            --base ft/wfc-bff \
             --head ft/copy-grpc${{github.sha}}project \
             --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
         env:
