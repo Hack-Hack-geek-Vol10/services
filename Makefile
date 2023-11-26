@@ -7,6 +7,9 @@ genproject:
 genmember:
 	sh scripts/member.sh
 
+genimage:
+	sh scripts/image.sh
+
 runuser:
 	go run cmd/app/user-service/main.go
 
@@ -16,7 +19,10 @@ runproject:
 runmember:
 	go run cmd/app/member-service/main.go
 
+runimage:
+	go run cmd/app/image-service/main.go
+
 test:
 	go test -v ./... --cover
 
-.PHONY: genuser genproject genmember runuser runproject runmember test 
+.PHONY: genuser genproject genmember runuser runproject runmember test genimage runimage
