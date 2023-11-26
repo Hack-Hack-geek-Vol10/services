@@ -33,3 +33,9 @@ type ReadProjectsParam struct {
 	Limit  uint32 `json:"limit"`
 	Offset uint32 `json:"offset"`
 }
+
+type UploadImageParam struct {
+	Key         string `json:"key"`
+	ContentType string `json:"content_type"`
+	Body        []byte `json:"body"`
+}
