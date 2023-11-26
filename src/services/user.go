@@ -20,8 +20,8 @@ func NewUserService(userRepo storages.UserRepo) user.UserServiceServer {
 }
 
 func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams) (*user.UserDetail, error) {
-	err := s.userRepo.Create(domain.CreateUserParams{
-		UserID: arg.Id,
+	result, err := s.userRepo.Create(ctx, domain.CreateUserParams{
+		UserID: arg.UserId,
 		Name:   arg.Name,
 		Email:  arg.Email,
 	})
@@ -29,27 +29,24 @@ func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams
 		return nil, err
 	}
 
-	info, err := s.userRepo.ReadOne(arg.Id)
-	if err != nil {
-		return nil, err
-	}
-
 	return &user.UserDetail{
-		Id:    info.UserID,
-		Name:  info.Name,
-		Email: info.Email,
+		UserId: result.UserID,
+		Name:   result.Name,
+		Email:  result.Email,
 	}, nil
 }
 
 func (s *userService) GetUser(ctx context.Context, arg *user.GetUserParams) (*user.UserDetail, error) {
-	userInfo, err := s.userRepo.ReadOne(arg.Id)
+	userInfo, err := s.userRepo.ReadOne(ctx, arg.UserId)
 	if err != nil {
 		return nil, err
 	}
 
 	return &user.UserDetail{
-		Id:    userInfo.UserID,
-		Name:  userInfo.Name,
-		Email: userInfo.Email,
+		UserId: userInfo.UserID,
+		Name:   userInfo.Name,
+		Email:  userInfo.Email,
 	}, nil
 }
+
+func (s *userService) mustEmbedUnimplementedUserServiceServer() {}

@@ -5,7 +5,12 @@ option go_package = "api/project-service/v1";
 package project.v1;
 
 service ProjectService {
-  rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse);
+  rpc CreateProject(CreateProjectRequest) returns (ProjectDetails);
+  rpc GetProject(GetProjectRequest) returns (ProjectDetails);
+  rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
+  rpc UpdateTitle(UpdateTitleRequest) returns (ProjectDetails);
+  rpc UpdateImage(UpdateImageRequest) returns (ProjectDetails);
+  rpc DeleteProject(DeleteProjectRequest) returns (DeleteProjectResponse);
 }
 
 message CreateProjectRequest {
@@ -13,9 +18,40 @@ message CreateProjectRequest {
   string user_id = 2;
 }
 
-message CreateProjectResponse {
-  string id = 1;
+message ProjectDetails {
+  string project_id = 1;
   string title = 2;
   string last_image = 3;
   bool is_personal = 4;
+}
+
+message GetProjectRequest {
+  string project_id = 1;
+}
+
+message ListProjectsRequest {
+  string user_id = 1;
+  uint32 limit = 2;
+  uint32 offset = 3;
+}
+
+message ListProjectsResponse {
+  repeated ProjectDetails projects = 1;
+}
+
+message UpdateTitleRequest {
+  string project_id = 1;
+  string title = 2;
+}
+message UpdateImageRequest {
+  string project_id = 1;
+  string last_image = 2;
+}
+
+message DeleteProjectRequest {
+  string project_id = 1;
+}
+
+message DeleteProjectResponse {
+  string project_id = 1;
 }
