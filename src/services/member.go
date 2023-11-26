@@ -20,14 +20,20 @@ func NewMemberService(memberRepo storages.MemberRepo) member.MemberServiceServer
 }
 
 func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest) (*member.Member, error) {
-	if err := m.memberRepo.Create(ctx, domain.CreateMemberParam{
+	result, err := m.memberRepo.Create(ctx, domain.CreateMemberParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
 		Authority: domain.Authority(in.Authority),
-	}); err != nil {
+	})
+
+	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return &member.Member{
+		ProjectId: result.ProjectID,
+		UserId:    result.UserID,
+		Authority: member.Auth(member.Auth_value[string(result.Authority)]),
+	}, nil
 }
 
 func (m *memberService) ReadMembers(ctx context.Context, in *member.ReadMembersRequest) (*member.ListMembers, error) {
@@ -48,11 +54,31 @@ func (m *memberService) ReadMembers(ctx context.Context, in *member.ReadMembersR
 	return &listMembers, nil
 }
 func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRequest) (*member.Member, error) {
+	result, err := m.memberRepo.UpdateAuthority(ctx, domain.UpdateAuthorityParam{
+		ProjectID: in.ProjectId,
+		UserID:    in.UserId,
+		Authority: domain.Authority(in.Authority),
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, nil
-
+	return &member.Member{
+		ProjectId: result.ProjectID,
+		UserId:    result.UserID,
+		Authority: member.Auth(member.Auth_value[string(result.Authority)]),
+	}, nil
 }
-func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMemberRequest) (*member.DeleteMemberResponse, error) {
 
-	return nil, nil
+func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMemberRequest) (*member.DeleteMemberResponse, error) {
+	if err := m.memberRepo.Delete(ctx, domain.DeleteMemberParam{
+		ProjectID: in.ProjectId,
+		UserID:    in.UserId,
+	}); err != nil {
+		return nil, err
+	}
+
+	return &member.DeleteMemberResponse{
+		Message: "successful",
+	}, nil
 }

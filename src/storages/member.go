@@ -12,8 +12,10 @@ type memberRepo struct {
 }
 
 type MemberRepo interface {
-	Create(ctx context.Context, arg domain.CreateMemberParam) error
+	Create(ctx context.Context, arg domain.CreateMemberParam) (*domain.ProjectMember, error)
 	ReadAll(ctx context.Context, projectID string) ([]*domain.ProjectMember, error)
+	UpdateAuthority(ctx context.Context, arg domain.UpdateAuthorityParam) (*domain.ProjectMember, error)
+	Delete(ctx context.Context, arg domain.DeleteMemberParam) error
 }
 
 func NewMemberRepo(db *sql.DB) MemberRepo {
@@ -22,10 +24,14 @@ func NewMemberRepo(db *sql.DB) MemberRepo {
 	}
 }
 
-func (m *memberRepo) Create(ctx context.Context, arg domain.CreateMemberParam) error {
-	const query = `INSERT INTO project_members (project_id,user_id,authority) VALUES ($1,$2,$3)`
+func (m *memberRepo) Create(ctx context.Context, arg domain.CreateMemberParam) (*domain.ProjectMember, error) {
+	const query = `INSERT INTO project_members (project_id,user_id,authority) VALUES ($1,$2,$3) RETURNING project_id,user_id,authority`
 	row := m.db.QueryRowContext(ctx, query, arg.ProjectID, arg.UserID, arg.Authority)
-	return row.Err()
+	var projectMember domain.ProjectMember
+	if err := row.Scan(&projectMember.ProjectID, &projectMember.UserID, &projectMember.Authority); err != nil {
+		return nil, err
+	}
+	return &projectMember, nil
 }
 
 func (m *memberRepo) ReadAll(ctx context.Context, projectID string) ([]*domain.ProjectMember, error) {
@@ -43,4 +49,20 @@ func (m *memberRepo) ReadAll(ctx context.Context, projectID string) ([]*domain.P
 		projectMembers = append(projectMembers, &projectMember)
 	}
 	return projectMembers, nil
+}
+
+func (m *memberRepo) UpdateAuthority(ctx context.Context, arg domain.UpdateAuthorityParam) (*domain.ProjectMember, error) {
+	const query = `UPDATE project_members SET authority = $1 WHERE project_id = $2 AND user_id = $3 RETURNING project_id,user_id,authority`
+	row := m.db.QueryRowContext(ctx, query, arg.Authority, arg.ProjectID, arg.UserID)
+	var projectMember domain.ProjectMember
+	if err := row.Scan(&projectMember.ProjectID, &projectMember.UserID, &projectMember.Authority); err != nil {
+		return nil, err
+	}
+	return &projectMember, nil
+}
+
+func (m *memberRepo) Delete(ctx context.Context, arg domain.DeleteMemberParam) error {
+	const query = `DELETE FROM project_members WHERE project_id = $1 AND user_id = $2`
+	row := m.db.QueryRowContext(ctx, query, arg.ProjectID, arg.UserID)
+	return row.Err()
 }

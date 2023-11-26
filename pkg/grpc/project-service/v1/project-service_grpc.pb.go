@@ -35,7 +35,7 @@ func NewProjectServiceClient(cc grpc.ClientConnInterface) ProjectServiceClient {
 
 func (c *projectServiceClient) CreateProject(ctx context.Context, in *CreateProjectRequest, opts ...grpc.CallOption) (*CreateProjectResponse, error) {
 	out := new(CreateProjectResponse)
-	err := c.cc.Invoke(ctx, "/project.ProjectService/CreateProject", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/project.v1.ProjectService/CreateProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _ProjectService_CreateProject_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/project.ProjectService/CreateProject",
+		FullMethod: "/project.v1.ProjectService/CreateProject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectServiceServer).CreateProject(ctx, req.(*CreateProjectRequest))
@@ -92,7 +92,7 @@ func _ProjectService_CreateProject_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProjectService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "project.ProjectService",
+	ServiceName: "project.v1.ProjectService",
 	HandlerType: (*ProjectServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

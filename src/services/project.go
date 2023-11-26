@@ -6,17 +6,20 @@ import (
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
+	"github.com/Hack-Hack-geek-Vol10/services/src/storages/clients"
 	"github.com/google/uuid"
 )
 
 type projectService struct {
 	project.UnimplementedProjectServiceServer
-	projectRepo storages.ProjectRepo
+	projectRepo  storages.ProjectRepo
+	memberClient clients.MemberClient
 }
 
-func NewProjectService(projectRepo storages.ProjectRepo) project.ProjectServiceServer {
+func NewProjectService(projectRepo storages.ProjectRepo, memberClient clients.MemberClient) project.ProjectServiceServer {
 	return &projectService{
-		projectRepo: projectRepo,
+		projectRepo:  projectRepo,
+		memberClient: memberClient,
 	}
 }
 
@@ -31,6 +34,16 @@ func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateP
 	}
 
 	if err := s.projectRepo.Create(ctx, param); err != nil {
+		return nil, err
+	}
+
+	_, err := s.memberClient.AddMember(ctx, domain.CreateMemberParam{
+		UserID:    arg.UserId,
+		ProjectID: param.ProjectID,
+		Authority: domain.AuthorityOwner,
+	})
+
+	if err != nil {
 		return nil, err
 	}
 
