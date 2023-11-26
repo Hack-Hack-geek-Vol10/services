@@ -44,7 +44,7 @@ jobs:
           git config --global user.email "${{ secrets.EMAIL_GITHUB }}"
           git config --global user.name "${{ secrets.USERNAME_GITHUB }}"
 
-          git switch -c ft/copy-grpc${{github.sha}}
+          git switch -c ft/copy-grpc${{github.sha}}user
 
           cp -r $HOME/user-service/* pkg/grpc
 
@@ -52,7 +52,7 @@ jobs:
         run: |
           git add .
           git commit -m "feat: copy grpc to graph-gateway"
-          git push origin ft/copy-grpc${{github.sha}}
+          git push origin ft/copy-grpc${{github.sha}}user
 
       - name: create Pull Request to frontend
         run: |
@@ -61,7 +61,7 @@ jobs:
             --body ":robot: copy grp[bot]" \
             --repo Hack-Hack-geek-Vol10/graph-gateway \
             --base develop \
-            --head ft/copy-grpc${{github.sha}} \
+            --head ft/copy-grpc${{github.sha}}user \
             --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
