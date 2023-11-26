@@ -1,6 +1,7 @@
-package storage
+package storages
 
 import (
+	"context"
 	"database/sql"
 
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
@@ -11,21 +12,31 @@ type userRepo struct {
 }
 
 type UserRepo interface {
-	Create(arg domain.CreateUserParams) error
-	ReadOne(userID string) (*domain.User, error)
+	Create(ctx context.Context, arg domain.CreateUserParams) (*domain.User, error)
+	ReadOne(ctx context.Context, userID string) (*domain.User, error)
 }
 
-func NewUserRepo(db *sql.DB) *userRepo {
+func NewUserRepo(db *sql.DB) UserRepo {
 	return &userRepo{db: db}
 }
 
-func (r *userRepo) Create(arg domain.CreateUserParams) error {
-	const query = `INSERT INTO users (user_id, name, email)VALUES($1, $2, $3)`
-	row := r.db.QueryRow(query, arg.UserID, arg.Name, arg.Email)
-	return row.Err()
+func (r *userRepo) Create(ctx context.Context, arg domain.CreateUserParams) (*domain.User, error) {
+	const query = `INSERT INTO users (user_id, name, email)VALUES($1, $2, $3) RETURNING user_id, name, email`
+
+	row := r.db.QueryRowContext(ctx, query, arg.UserID, arg.Name, arg.Email)
+	if err := row.Err(); err != nil {
+		return nil, err
+	}
+
+	var user domain.User
+	if err := row.Scan(&user.UserID, &user.Name, &user.Email); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
-func (r *userRepo) ReadOne(userID string) (*domain.User, error) {
+func (r *userRepo) ReadOne(ctx context.Context, userID string) (*domain.User, error) {
 	const query = `SELECT user_id, name, email FROM users WHERE user_id = $1 AND is_delete = false`
 
 	row := r.db.QueryRow(query, userID)

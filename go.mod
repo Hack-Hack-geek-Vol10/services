@@ -5,7 +5,6 @@ go 1.21.4
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/google/uuid v1.3.1
-	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.59.0
