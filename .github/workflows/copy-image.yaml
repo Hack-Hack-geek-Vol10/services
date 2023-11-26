@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-       - 'pkg/grpc/image-service/**'
+    # paths:
+    #    - 'pkg/grpc/image-service/**'
 
 permissions:
   actions: write
@@ -45,7 +45,7 @@ jobs:
               echo true ||
               echo false
             )
-            if [ $branch_is_existing = 'false' ]; then
+            if [ $branch_is_existing = 'true' ]; then
               git branch ft/wfc-bff
             else
               echo "branch is existing"
