@@ -5,7 +5,6 @@ var Config = &config{}
 type config struct {
 	Server   Server
 	Database Database
-	S3       S3
 }
 
 type Server struct {
@@ -28,12 +27,4 @@ type Database struct {
 	ConnectAttempts int  `env:"PSQL_CONNECT_ATTEMPTS" envDefault:"3"`
 	ConnectBlocks   bool `env:"PSQL_CONNECT_BLOCKS" envDefault:"false"`
 	CloseTimeout    int  `env:"PSQL_CLOSE_TIMEOUT" envDefault:"10"`
-}
-
-type S3 struct {
-	CfAccountID        string `env:"CF_ACCOUNT_ID"`
-	CfAccountKeyID     string `env:"CF_ACCOUNT_KEY_ID"`
-	CfAccountKeySecret string `env:"CF_ACCOUNT_KEY_SECRET"`
-	CfBucket           string `env:"CF_BUCKET"`
-	CfS3Endpoint       string `env:"CF_ENDPOINT"`
 }

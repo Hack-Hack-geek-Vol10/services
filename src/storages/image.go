@@ -1,18 +1,17 @@
 package storages
 
 import (
-	"bytes"
 	"context"
+	"fmt"
+	"time"
 
-	"github.com/Hack-Hack-geek-Vol10/services/cmd/config"
+	"cloud.google.com/go/storage"
+	firebase "firebase.google.com/go"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 type imageRepo struct {
-	c *s3.Client
+	app *firebase.App
 }
 
 type ImageRepo interface {
@@ -20,30 +19,58 @@ type ImageRepo interface {
 	DeleteImage(ctx context.Context, key string) error
 }
 
-func NewImageRepo(c *s3.Client) ImageRepo {
+func NewImageRepo(app *firebase.App) ImageRepo {
 	return &imageRepo{
-		c: c,
+		app: app,
 	}
 }
 
 func (i *imageRepo) UploadImage(ctx context.Context, arg *domain.UploadImageParam) (string, string, error) {
-	result, err := manager.NewUploader(i.c).Upload(ctx, &s3.PutObjectInput{
-		Bucket:      aws.String(config.Config.S3.CfBucket),
-		Key:         aws.String(arg.Key),
-		Body:        bytes.NewReader(arg.Body),
-		ContentType: aws.String(arg.ContentType),
-	})
+
+	client, err := i.app.Storage(context.Background())
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("storage.Client: %v", err)
 	}
 
-	return result.Location, *result.Key, nil
+	bucket, err := client.DefaultBucket()
+	if err != nil {
+		return "", "", fmt.Errorf("DefaultBucket: %v", err)
+	}
+
+	obj := bucket.Object(arg.Key)
+	wc := obj.NewWriter(ctx)
+	wc.ContentType = arg.ContentType
+
+	if _, err := wc.Write(arg.Body); err != nil {
+		return "", "", fmt.Errorf("createFile:write %v: %v", arg.Key, err)
+	}
+	if err := wc.Close(); err != nil {
+		return "", "", fmt.Errorf("createFile:close %v: %v", arg.Key, err)
+	}
+	downloadURL, err := bucket.SignedURL(obj.ObjectName(), &storage.SignedURLOptions{
+		Expires: time.Now().AddDate(100, 0, 0),
+		Method:  "GET",
+	})
+	if err != nil {
+		return "", "", fmt.Errorf("downloadURL :%v", err)
+	}
+
+	return downloadURL, arg.Key, nil
 }
 
 func (i *imageRepo) DeleteImage(ctx context.Context, key string) error {
-	_, err := i.c.DeleteObject(ctx, &s3.DeleteObjectInput{
-		Bucket: aws.String(config.Config.S3.CfBucket),
-		Key:    aws.String(key),
-	})
-	return err
+	client, err := i.app.Storage(context.Background())
+	if err != nil {
+		return fmt.Errorf("storage.Client: %v", err)
+	}
+
+	bucket, err := client.DefaultBucket()
+	if err != nil {
+		return fmt.Errorf("DefaultBucket: %v", err)
+	}
+
+	if err := bucket.Object(key).Delete(ctx); err != nil {
+		return err
+	}
+	return nil
 }

@@ -8,7 +8,7 @@ import (
 
 	"github.com/Hack-Hack-geek-Vol10/services/cmd/config"
 	image "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/image-service/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/src/driver/cloudflare"
+	"github.com/Hack-Hack-geek-Vol10/services/src/driver/firebase"
 	"github.com/Hack-Hack-geek-Vol10/services/src/services"
 	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
 	"google.golang.org/grpc"
@@ -23,13 +23,13 @@ func main() {
 		panic(err)
 	}
 
-	client, err := cloudflare.NewAwsConfig().Client()
+	app, err := firebase.Connect("./sa.json")
 	if err != nil {
 		panic(err)
 	}
 
 	s := grpc.NewServer()
-	image.RegisterImageServiceServer(s, services.NewImageService(storages.NewImageRepo(client)))
+	image.RegisterImageServiceServer(s, services.NewImageService(storages.NewImageRepo(app)))
 
 	reflection.Register(s)
 

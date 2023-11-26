@@ -24,10 +24,5 @@ func LoadEnv(path ...string) {
 	if err := env.Parse(&config.Database); err != nil {
 		log.Fatalf("env load error: %v", err)
 	}
-
-	if err := env.Parse(&config.S3); err != nil {
-		log.Fatalf("env load error: %v", err)
-	}
-
 	Config = config
 }

@@ -130,4 +130,4 @@ func (s *projectService) DeleteProject(ctx context.Context, arg *project.DeleteP
 	}, nil
 }
 
-func (s *projectService) mustEmbedUnimplementedProjectServiceServer()
+func (s *projectService) mustEmbedUnimplementedProjectServiceServer() {}
