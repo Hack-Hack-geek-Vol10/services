@@ -10,11 +10,9 @@ import (
 
 	"github.com/Hack-Hack-geek-Vol10/services/cmd/config"
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
-	grpcclient "github.com/Hack-Hack-geek-Vol10/services/src/driver/grpc-client"
 	"github.com/Hack-Hack-geek-Vol10/services/src/driver/postgres"
 	"github.com/Hack-Hack-geek-Vol10/services/src/services"
 	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
-	"github.com/Hack-Hack-geek-Vol10/services/src/storages/clients"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -37,13 +35,8 @@ func main() {
 		panic(err)
 	}
 
-	grpcConn, err := grpcclient.Connect(config.Config.Server.MemberAddr)
-	if err != nil {
-		panic(err)
-	}
-
 	s := grpc.NewServer()
-	project.RegisterProjectServiceServer(s, services.NewProjectService(storages.NewProjectRepo(db), clients.NewMemberClient(grpcConn)))
+	project.RegisterProjectServiceServer(s, services.NewProjectService(storages.NewProjectRepo(db)))
 
 	reflection.Register(s)
 

@@ -6,20 +6,17 @@ import (
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
-	"github.com/Hack-Hack-geek-Vol10/services/src/storages/clients"
 	"github.com/google/uuid"
 )
 
 type projectService struct {
 	project.UnimplementedProjectServiceServer
-	projectRepo  storages.ProjectRepo
-	memberClient clients.MemberClient
+	projectRepo storages.ProjectRepo
 }
 
-func NewProjectService(projectRepo storages.ProjectRepo, memberClient clients.MemberClient) project.ProjectServiceServer {
+func NewProjectService(projectRepo storages.ProjectRepo) project.ProjectServiceServer {
 	return &projectService{
-		projectRepo:  projectRepo,
-		memberClient: memberClient,
+		projectRepo: projectRepo,
 	}
 }
 
