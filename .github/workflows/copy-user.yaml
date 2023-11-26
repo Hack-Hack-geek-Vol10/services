@@ -46,7 +46,8 @@ jobs:
               echo false
             )
             if [ $branch_is_existing = 'false' ]; then
-              git branch ft/wfc-bff
+              git switch -c ft/wfc-bff
+              git push origin ft/wfc-bff
             else
               echo "branch is existing"
             fi
