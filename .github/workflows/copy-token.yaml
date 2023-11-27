@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-       - 'pkg/grpc/token-service/**'
+    # paths:
+    #    - 'pkg/grpc/token-service/**'
 
 permissions:
   actions: write
@@ -60,7 +60,7 @@ jobs:
 
           git switch -c ft/copy-grpc${{github.sha}}token
 
-          cp -r $HOME/token-service/* pkg/grpc
+          cp -r $HOME/token-service/* pkg/grpc/token-service
 
       - name: Commit and push changes
         run: |
