@@ -1,17 +1,9 @@
-genuser:
-	sh scripts/user.sh
-
-genproject:
-	sh scripts/project.sh
-
-genmember:
-	sh scripts/member.sh
-
-genimage:
+genproto:
 	sh scripts/image.sh
-
-gentoken:
+	sh scripts/member.sh
+	sh scripts/project.sh
 	sh scripts/token.sh
+	sh scripts/user.sh
 
 runuser:
 	go run cmd/app/user-service/main.go
@@ -31,4 +23,4 @@ runtoken:
 test:
 	go test -v ./... --cover
 
-.PHONY: genuser genproject genmember runuser runproject runmember test genimage runimage gentoken runtoken
+.PHONY: genproto runuser runproject runmember runimage runtoken test

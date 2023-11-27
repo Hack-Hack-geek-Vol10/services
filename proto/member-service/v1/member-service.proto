@@ -5,8 +5,8 @@ option go_package = "api/member-service/v1";
 package member.v1;
 
 service MemberService {
-    rpc AddMember(MemberRequest) returns (Member);
-    rpc ReadMembers(ReadMembersRequest) returns (ListMembers);
+    rpc CreateMember(MemberRequest) returns (Member);
+    rpc GetMembers(GetMembersRequest) returns (ListMembers);
     rpc UpdateAuthority(MemberRequest) returns (Member);
     rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberResponse);
 }
@@ -23,7 +23,7 @@ message Member {
     auth authority = 3;
 }
 
-message ReadMembersRequest {
+message GetMembersRequest {
     string project_id = 1;
 }
 

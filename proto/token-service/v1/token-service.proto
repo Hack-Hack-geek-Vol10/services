@@ -6,7 +6,7 @@ package token_service;
 
 service TokenService {
     rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) ;
-    rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) ;
+    rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) ;
 }
 
 message CreateTokenRequest {
@@ -18,11 +18,11 @@ message CreateTokenResponse {
     string token = 1;
 }
 
-message ValidateTokenRequest {
+message VerifyTokenRequest {
     string token = 1;
 }
 
-message ValidateTokenResponse {
+message VerifyTokenResponse {
     string project_id = 1;
     auth authority = 2;
 }

@@ -36,7 +36,7 @@ func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest)
 	}, nil
 }
 
-func (m *memberService) ReadMembers(ctx context.Context, in *member.ReadMembersRequest) (*member.ListMembers, error) {
+func (m *memberService) ReadMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
 	members, err := m.memberRepo.ReadAll(ctx, in.ProjectId)
 	if err != nil {
 		return nil, err
