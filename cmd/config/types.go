@@ -12,7 +12,7 @@ type Server struct {
 	UserAddr    string `env:"SERVER_ADDR" envDefault:":8081"`
 	ProjectAddr string `env:"SERVER_ADDR" envDefault:":8082"`
 	MemberAddr  string `env:"SERVER_ADDR" envDefault:":8083"`
-	Imageaddr   string `env:"SERVER_ADDR" envDefault:":8084"`
+	ImageAddr   string `env:"SERVER_ADDR" envDefault:":8084"`
 	TokenAddr   string `env:"SERVER_ADDR" envDefault:":8085"`
 }
 

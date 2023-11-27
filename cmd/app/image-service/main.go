@@ -18,7 +18,7 @@ import (
 func main() {
 	config.LoadEnv()
 
-	listener, err := net.Listen("tcp", config.Config.Server.Imageaddr)
+	listener, err := net.Listen("tcp", config.Config.Server.ImageAddr)
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func main() {
 
 	// 3. 作成したgRPCサーバーを、8080番ポートで稼働させる
 	go func() {
-		log.Printf("start gRPC server port: %v", config.Config.Server.Imageaddr)
+		log.Printf("start gRPC server port: %v", config.Config.Server.ImageAddr)
 		s.Serve(listener)
 	}()
 
