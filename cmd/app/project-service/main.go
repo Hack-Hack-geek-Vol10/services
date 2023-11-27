@@ -11,8 +11,8 @@ import (
 	"github.com/Hack-Hack-geek-Vol10/services/cmd/config"
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/driver/postgres"
-	service "github.com/Hack-Hack-geek-Vol10/services/src/services"
-	storage "github.com/Hack-Hack-geek-Vol10/services/src/storages"
+	"github.com/Hack-Hack-geek-Vol10/services/src/services"
+	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -36,7 +36,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	project.RegisterProjectServiceServer(s, service.NewProjectService(storage.NewProjectRepo(db)))
+	project.RegisterProjectServiceServer(s, services.NewProjectService(storages.NewProjectRepo(db)))
 
 	reflection.Register(s)
 

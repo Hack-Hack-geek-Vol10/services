@@ -10,3 +10,32 @@ type CreateUserParams struct {
 	Name   string `json:"name"`
 	Email  string `json:"email"`
 }
+
+type CreateMemberParam struct {
+	ProjectID string    `json:"project_id"`
+	UserID    string    `json:"user_id"`
+	Authority Authority `json:"authority"`
+}
+
+type UpdateAuthorityParam struct {
+	ProjectID string    `json:"project_id"`
+	UserID    string    `json:"user_id"`
+	Authority Authority `json:"authority"`
+}
+
+type DeleteMemberParam struct {
+	ProjectID string `json:"project_id"`
+	UserID    string `json:"user_id"`
+}
+
+type ReadProjectsParam struct {
+	UserID string `json:"user_id"`
+	Limit  uint32 `json:"limit"`
+	Offset uint32 `json:"offset"`
+}
+
+type UploadImageParam struct {
+	Key         string `json:"key"`
+	ContentType string `json:"content_type"`
+	Body        []byte `json:"body"`
+}

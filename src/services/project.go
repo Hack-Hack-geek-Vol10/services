@@ -1,26 +1,26 @@
-package service
+package services
 
 import (
 	"context"
 
 	project "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/project-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
-	storage "github.com/Hack-Hack-geek-Vol10/services/src/storages"
+	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
 	"github.com/google/uuid"
 )
 
 type projectService struct {
 	project.UnimplementedProjectServiceServer
-	projectRepo storage.ProjectRepo
+	projectRepo storages.ProjectRepo
 }
 
-func NewProjectService(projectRepo storage.ProjectRepo) project.ProjectServiceServer {
+func NewProjectService(projectRepo storages.ProjectRepo) project.ProjectServiceServer {
 	return &projectService{
 		projectRepo: projectRepo,
 	}
 }
 
-func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateProjectRequest) (*project.CreateProjectResponse, error) {
+func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateProjectRequest) (*project.ProjectDetails, error) {
 	if len(arg.Title) == 0 {
 		arg.Title = "untitled"
 	}
@@ -30,14 +30,104 @@ func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateP
 		Title:     arg.Title,
 	}
 
-	if err := s.projectRepo.Create(ctx, param); err != nil {
+	result, err := s.projectRepo.Create(ctx, param)
+	if err != nil {
 		return nil, err
 	}
 
-	return &project.CreateProjectResponse{
-		Id:         param.ProjectID,
-		Title:      param.Title,
-		LastImage:  "",
+	return &project.ProjectDetails{
+		ProjectId:  result.ProjectID,
+		Title:      result.Title,
+		LastImage:  result.LastImage,
 		IsPersonal: true,
 	}, nil
 }
+
+func (s *projectService) GetProject(ctx context.Context, arg *project.GetProjectRequest) (*project.ProjectDetails, error) {
+	projectInfo, err := s.projectRepo.ReadOne(ctx, arg.ProjectId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &project.ProjectDetails{
+		ProjectId:  projectInfo.ProjectID,
+		Title:      projectInfo.Title,
+		LastImage:  projectInfo.LastImage,
+		IsPersonal: projectInfo.IsPersonal,
+	}, nil
+}
+
+func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProjectsRequest) (*project.ListProjectsResponse, error) {
+	if arg.Limit == 0 {
+		arg.Limit = 10
+	}
+
+	if arg.Offset == 0 {
+		arg.Offset = 1
+	}
+
+	result, err := s.projectRepo.ReadAll(ctx, domain.ReadProjectsParam{
+		UserID: arg.UserId,
+		Limit:  arg.Limit,
+		Offset: (arg.Offset - 1) * arg.Limit,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	var projects []*project.ProjectDetails
+	for _, info := range result {
+		projects = append(projects, &project.ProjectDetails{
+			ProjectId:  info.ProjectID,
+			Title:      info.Title,
+			LastImage:  info.LastImage,
+			IsPersonal: info.IsPersonal,
+		})
+	}
+
+	return &project.ListProjectsResponse{
+		Projects: projects,
+	}, nil
+}
+
+func (s *projectService) UpdateTitle(ctx context.Context, arg *project.UpdateTitleRequest) (*project.ProjectDetails, error) {
+	projectInfo, err := s.projectRepo.UpdateTitle(ctx, arg.ProjectId, arg.Title)
+	if err != nil {
+		return nil, err
+	}
+
+	return &project.ProjectDetails{
+		ProjectId:  projectInfo.ProjectID,
+		Title:      projectInfo.Title,
+		LastImage:  projectInfo.LastImage,
+		IsPersonal: projectInfo.IsPersonal,
+	}, nil
+}
+
+func (s *projectService) UpdateImage(ctx context.Context, arg *project.UpdateImageRequest) (*project.ProjectDetails, error) {
+	projectInfo, err := s.projectRepo.UpdateLastImage(ctx, arg.ProjectId, arg.LastImage)
+	if err != nil {
+		return nil, err
+	}
+
+	return &project.ProjectDetails{
+		ProjectId:  projectInfo.ProjectID,
+		Title:      projectInfo.Title,
+		LastImage:  projectInfo.LastImage,
+		IsPersonal: projectInfo.IsPersonal,
+	}, nil
+}
+
+func (s *projectService) DeleteProject(ctx context.Context, arg *project.DeleteProjectRequest) (*project.DeleteProjectResponse, error) {
+	err := s.projectRepo.Delete(ctx, arg.ProjectId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &project.DeleteProjectResponse{
+		ProjectId: arg.ProjectId,
+	}, nil
+}
+
+func (s *projectService) mustEmbedUnimplementedProjectServiceServer() {}
