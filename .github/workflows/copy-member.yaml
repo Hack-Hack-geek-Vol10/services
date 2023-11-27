@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - 'pkg/grpc/member-service/**'
+    # paths:
+    #   - 'pkg/grpc/member-service/**'
 
 permissions:
   actions: write
@@ -60,7 +60,7 @@ jobs:
 
           git switch -c ft/copy-grpc${{github.sha}}member
 
-          cp -r $HOME/member-service/* pkg/grpc
+          cp -r $HOME/member-service/* pkg/grpc/member-service
 
       - name: Commit and push changes
         run: |
