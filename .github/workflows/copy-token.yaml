@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    # paths:
-    #    - 'pkg/grpc/token-service/**'
+    paths:
+       - 'pkg/grpc/token-service/**'
 
 permissions:
   actions: write
