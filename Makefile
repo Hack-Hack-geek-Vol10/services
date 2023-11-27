@@ -10,6 +10,9 @@ genmember:
 genimage:
 	sh scripts/image.sh
 
+gentoken:
+	sh scripts/token.sh
+
 runuser:
 	go run cmd/app/user-service/main.go
 
@@ -22,7 +25,10 @@ runmember:
 runimage:
 	go run cmd/app/image-service/main.go
 
+runtoken:
+	go run cmd/app/token-service/main.go
+
 test:
 	go test -v ./... --cover
 
-.PHONY: genuser genproject genmember runuser runproject runmember test genimage runimage
+.PHONY: genuser genproject genmember runuser runproject runmember test genimage runimage gentoken runtoken
