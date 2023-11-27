@@ -29,7 +29,15 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRe
 		Token: pasetoToken,
 	}, nil
 }
-func (t *tokenService) ValidateToken(context.Context, *token.ValidateTokenRequest) (*token.ValidateTokenResponse, error) {
-	return nil, nil
+func (t *tokenService) ValidateToken(ctx context.Context, arg *token.ValidateTokenRequest) (*token.ValidateTokenResponse, error) {
+	payload, err := t.maker.VerifyToken(arg.Token)
+	if err != nil {
+		return nil, err
+	}
+
+	return &token.ValidateTokenResponse{
+		ProjectId: payload.ProjectID,
+		Authority: token.Auth(payload.Authority),
+	}, nil
 }
 func (t *tokenService) mustEmbedUnimplementedTokenServiceServer() {}
