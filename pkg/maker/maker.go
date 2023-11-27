@@ -1,10 +1,14 @@
-package paseto
+package maker
 
-import "time"
+import (
+	"time"
+
+	token "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/token-service/v1"
+)
 
 type Maker interface {
 	// トークンを作る
-	CreateToken(game_id, owner_id string, isHost bool, duration time.Duration) (string, error)
+	CreateToken(projectID string, authority token.Auth, duration time.Duration) (string, error)
 
 	VerifyToken(token string) (*Payload, error)
 }

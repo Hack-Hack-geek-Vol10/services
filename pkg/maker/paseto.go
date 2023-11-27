@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	token "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/token-service/v1"
 	"github.com/aead/chacha20poly1305"
 	"github.com/o1egl/paseto"
 )
@@ -24,8 +25,8 @@ func NewPasetoMaker(symmetricKey string) (Maker, error) {
 	return maker, nil
 }
 
-func (maker *PasetoMaker) CreateToken(game_id, owner_id string, isHost bool, duration time.Duration) (string, error) {
-	payload, err := NewPayload(game_id, owner_id, isHost, duration)
+func (maker *PasetoMaker) CreateToken(projectID string, authority token.Auth, duration time.Duration) (string, error) {
+	payload, err := NewPayload(projectID, authority, duration)
 	if err != nil {
 		return "", err
 	}
