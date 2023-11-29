@@ -21,4 +21,4 @@ ENV PSQL_CLOSE_TIMEOUT=
 
 EXPOSE ${SERVER_ADDR}
 
-CMD ["./member-service"]
+CMD ["./image-service"]
