@@ -8,11 +8,11 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/Hack-Hack-geek-Vol10/services/pkg/driver/postgres"
 	project "github.com/Hack-Hack-geek-Vol10/services/project-service/api/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/project-service/cmd/config"
 	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/infra"
 	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/usecase"
+	"github.com/murasame29/db-conn/sqldb/postgres"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -31,7 +31,17 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	conn := postgres.NewConnection()
+	conn := postgres.NewConnection(
+		config.Config.Database.User,
+		config.Config.Database.Password,
+		config.Config.Database.Host,
+		config.Config.Database.Port,
+		config.Config.Database.DBName,
+		config.Config.Database.SSLMode,
+		config.Config.Database.ConnectAttempts,
+		config.Config.Database.ConnectWaitTime,
+		config.Config.Database.ConnectBlocks,
+	)
 	defer conn.Close(ctx)
 
 	db, err := conn.Connection()
