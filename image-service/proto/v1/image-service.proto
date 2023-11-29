@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "api/image-service/v1";
+
+package image_service.v1;
+
+service ImageService {
+  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse);
+  rpc DeleteImage(DeleteImageRequest) returns (DeleteImageResponse);
+}
+
+message UploadImageRequest {
+  string key = 1;
+  string content_type = 2;
+  bytes data = 3;
+}
+
+message UploadImageResponse {
+  string key = 1;
+  string path = 2;
+}
+
+message DeleteImageRequest {
+  string key = 1;
+}
+
+message DeleteImageResponse {
+  bool success = 1;
+}
+
