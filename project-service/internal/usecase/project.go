@@ -4,8 +4,8 @@ import (
 	"context"
 
 	project "github.com/Hack-Hack-geek-Vol10/services/project-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/infra"
-	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 	"github.com/google/uuid"
 )
 

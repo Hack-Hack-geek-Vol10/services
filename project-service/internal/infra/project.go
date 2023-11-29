@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
+	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/domain"
 )
 
 type projectRepo struct {
