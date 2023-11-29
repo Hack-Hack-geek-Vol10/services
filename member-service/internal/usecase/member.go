@@ -4,8 +4,8 @@ import (
 	"context"
 
 	member "github.com/Hack-Hack-geek-Vol10/services/member-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/infra"
-	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 )
 
 type memberService struct {

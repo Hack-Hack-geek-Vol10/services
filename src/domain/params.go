@@ -11,23 +11,6 @@ type CreateUserParams struct {
 	Email  string `json:"email"`
 }
 
-type CreateMemberParam struct {
-	ProjectID string    `json:"project_id"`
-	UserID    string    `json:"user_id"`
-	Authority Authority `json:"authority"`
-}
-
-type UpdateAuthorityParam struct {
-	ProjectID string    `json:"project_id"`
-	UserID    string    `json:"user_id"`
-	Authority Authority `json:"authority"`
-}
-
-type DeleteMemberParam struct {
-	ProjectID string `json:"project_id"`
-	UserID    string `json:"user_id"`
-}
-
 type ReadProjectsParam struct {
 	UserID string `json:"user_id"`
 	Limit  uint32 `json:"limit"`
