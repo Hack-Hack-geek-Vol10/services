@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	image "github.com/Hack-Hack-geek-Vol10/services/image-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/infra"
-	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 	"google.golang.org/grpc/status"
 )
 
