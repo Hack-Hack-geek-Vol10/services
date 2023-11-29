@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
 	user "github.com/Hack-Hack-geek-Vol10/services/user-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/domain"
 	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/infra"
 )
 
