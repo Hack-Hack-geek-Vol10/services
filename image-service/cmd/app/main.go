@@ -10,7 +10,7 @@ import (
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/cmd/config"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/infra"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/usecase"
-	"github.com/Hack-Hack-geek-Vol10/services/src/driver/firebase"
+	"github.com/Hack-Hack-geek-Vol10/services/pkg/driver/firebase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
