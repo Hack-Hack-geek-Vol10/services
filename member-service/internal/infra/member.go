@@ -1,4 +1,4 @@
-package storages
+package infra
 
 import (
 	"context"

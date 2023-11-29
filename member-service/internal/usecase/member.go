@@ -1,19 +1,19 @@
-package services
+package usecase
 
 import (
 	"context"
 
-	member "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/member-service/v1"
+	member "github.com/Hack-Hack-geek-Vol10/services/member-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/infra"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
-	"github.com/Hack-Hack-geek-Vol10/services/src/storages"
 )
 
 type memberService struct {
 	member.UnimplementedMemberServiceServer
-	memberRepo storages.MemberRepo
+	memberRepo infra.MemberRepo
 }
 
-func NewMemberService(memberRepo storages.MemberRepo) member.MemberServiceServer {
+func NewMemberService(memberRepo infra.MemberRepo) member.MemberServiceServer {
 	return &memberService{
 		memberRepo: memberRepo,
 	}
