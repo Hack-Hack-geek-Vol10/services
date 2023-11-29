@@ -1,16 +1,18 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 
+	firebase "firebase.google.com/go"
 	image "github.com/Hack-Hack-geek-Vol10/services/image-service/api/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/cmd/config"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/infra"
 	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/usecase"
-	"github.com/Hack-Hack-geek-Vol10/services/pkg/driver/firebase"
+	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -26,7 +28,10 @@ func main() {
 		panic(err)
 	}
 
-	app, err := firebase.Connect("./sa.json")
+	serviceAccount := option.WithCredentialsFile("./sa.json")
+	app, err := firebase.NewApp(context.Background(), &firebase.Config{
+		StorageBucket: config.Config.Firebase.Bucket,
+	}, serviceAccount)
 	if err != nil {
 		panic(err)
 	}
