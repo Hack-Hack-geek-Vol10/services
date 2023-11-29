@@ -1,12 +1,12 @@
 FROM golang:1.21.4-alpine3.14
 
-WORKDIR /app/member-service
+WORKDIR /app/project-service
 
 COPY . .
 
-RUN go build -o member-service
+RUN go build -o project-service
 
-ENV SERVER_ADDR=8084
+ENV SERVER_ADDR=8082
 ENV PSQL_HOST=
 ENV PSQL_PORT=
 ENV PSQL_USER=
@@ -21,4 +21,4 @@ ENV PSQL_CLOSE_TIMEOUT=
 
 EXPOSE ${SERVER_ADDR}
 
-CMD ["./image-service"]
+CMD ["./project-service"]
