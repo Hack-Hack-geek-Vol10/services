@@ -1,19 +1,19 @@
-package services
+package usecase
 
 import (
 	"context"
 
-	user "github.com/Hack-Hack-geek-Vol10/services/pkg/grpc/user-service/v1"
 	"github.com/Hack-Hack-geek-Vol10/services/src/domain"
-	storages "github.com/Hack-Hack-geek-Vol10/services/src/storages"
+	user "github.com/Hack-Hack-geek-Vol10/services/user-service/api/v1"
+	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/infra"
 )
 
 type userService struct {
 	user.UnimplementedUserServiceServer
-	userRepo storages.UserRepo
+	userRepo infra.UserRepo
 }
 
-func NewUserService(userRepo storages.UserRepo) user.UserServiceServer {
+func NewUserService(userRepo infra.UserRepo) user.UserServiceServer {
 	return &userService{
 		userRepo: userRepo,
 	}
