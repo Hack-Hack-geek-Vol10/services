@@ -1,6 +1,6 @@
 FROM golang:1.21.4-alpine3.14
 
-WORKDIR /app
+WORKDIR /app/image-service
 
 COPY . .
 

@@ -1,2 +1,2 @@
-cd proto
-protoc --go_out=../pkg/grpc --go_opt=paths=source_relative --go-grpc_out=../pkg/grpc --go-grpc_opt=paths=source_relative member-service/v1/member-service.proto
+cd member-service/proto
+protoc --go_out=../api --go_opt=paths=source_relative --go-grpc_out=../api --go-grpc_opt=paths=source_relative */*.proto
