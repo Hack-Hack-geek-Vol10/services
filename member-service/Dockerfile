@@ -1,10 +1,10 @@
-FROM golang:1.21.4-alpine3.14
+FROM golang:1.21.4
 
 WORKDIR /app/member-service
 
 COPY . .
 
-RUN go build -o member-service
+RUN go build -o member-service ./cmd/app/main.go
 
 ENV SERVER_ADDR=8084
 ENV PSQL_HOST=
@@ -21,4 +21,4 @@ ENV PSQL_CLOSE_TIMEOUT=
 
 EXPOSE ${SERVER_ADDR}
 
-CMD ["./image-service"]
+CMD ["./member-service"]

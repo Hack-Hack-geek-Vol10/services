@@ -1,10 +1,11 @@
-FROM golang:1.21.4-alpine3.14
+FROM golang:1.21.4
 
 WORKDIR /app/image-service
 
 COPY . .
+COPY sa.json .
 
-RUN go build -o image-service
+RUN go build -o image-service ./cmd/app/main.go
 
 ENV SERVER_ADDR=8084
 ENV FIREBASE_BUCKET=

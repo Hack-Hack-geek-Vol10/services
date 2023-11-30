@@ -1,10 +1,10 @@
-FROM golang:1.21.4-alpine3.14
+FROM golang:1.21.4
 
 WORKDIR /app/project-service
 
 COPY . .
 
-RUN go build -o project-service
+RUN go build -o project-service ./cmd/app/main.go
 
 ENV SERVER_ADDR=8082
 ENV PSQL_HOST=
