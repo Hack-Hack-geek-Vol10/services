@@ -35,12 +35,13 @@ message CreateTokenResponse {
 }
 
 message GetTokenRequest {
-  string project_id = 1;
+  string token = 1;
 }
 
 message GetTokenResponse {
-  string token = 1;
-  int32 authority = 2;
+  string token_id = 1;
+  string project_id = 2;
+  int32 authority = 3;
 }
 
 message DeleteTokenRequest {

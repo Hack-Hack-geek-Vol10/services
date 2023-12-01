@@ -1,12 +1,15 @@
 package domain
 
-type CreateProjectParam struct {
+type CreateTokenParam struct {
+	TokenID   string `json:"token_id"`
 	ProjectID string `json:"project_id"`
-	Title     string `json:"title"`
+	Authority int    `json:"authority"`
 }
 
-type ReadProjectsParam struct {
-	UserID string `json:"user_id"`
-	Limit  uint32 `json:"limit"`
-	Offset uint32 `json:"offset"`
+type GetTokenParam struct {
+	TokenID string `json:"token_id"`
+}
+
+type DeleteTokenParam struct {
+	ProjectID string `json:"project_id"`
 }
