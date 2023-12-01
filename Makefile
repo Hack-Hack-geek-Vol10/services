@@ -11,7 +11,7 @@ migratedown1:
 	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose down 1
 
 run:
-	docker-compose up -d
+	sh cmd/scripts/start.sh
 
 down:
 	docker-compose down
