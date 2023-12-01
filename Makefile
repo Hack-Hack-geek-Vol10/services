@@ -11,9 +11,12 @@ migratedown1:
 	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose down 1
 
 run:
-	sh cmd/scripts/run_server.sh
+	docker-compose up -d
 
-test:
-	go test -v ./... --cover
+down:
+	docker-compose down
 
-.PHONY: migrateup migrateup1 migratedown migratedown1
+newnetwork:
+	docker network create vol10-networks
+
+.PHONY: migrateup migrateup1 migratedown migratedown1 run down newnetwork

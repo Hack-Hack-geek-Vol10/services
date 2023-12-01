@@ -1,0 +1,86 @@
+version: "3"
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - 8081:8081
+    environment:
+      - SERVER_ADDR=:8081
+      - PSQL_HOST=vol10
+      - PSQL_PORT=5432
+      - PSQL_USER=postgres
+      - PSQL_PASSWORD=postgres
+      - PSQL_DBNAME=vol10
+      - PSQL_SSLMODE=disable
+      - PSQL_CONNECT_TIMEOUT=10
+      - PSQL_CONNECT_WAIT_TIME=10
+      - PSQL_CONNECT_ATTEMPTS=3
+    networks:
+      - vol10-networks
+    depends_on:
+          - vol10
+  project-service:
+    build: ./project-service
+    ports:
+      - 8082:8082
+    environment:
+      - SERVER_ADDR=:8082
+      - PSQL_HOST=vol10
+      - PSQL_PORT=5432
+      - PSQL_USER=postgres
+      - PSQL_PASSWORD=postgres
+      - PSQL_DBNAME=vol10
+      - PSQL_SSLMODE=disable
+      - PSQL_CONNECT_TIMEOUT=10
+      - PSQL_CONNECT_WAIT_TIME=10
+      - PSQL_CONNECT_ATTEMPTS=3
+    networks:
+      - vol10-networks
+  image-service:
+    build: ./image-service
+    ports:
+      - 8083:8083
+    environment:
+      - SERVER_ADDR=:8083
+      - FIREBASE_BUCKET=geek-vol10.appspot.com
+    networks:
+      - vol10-networks
+    depends_on:
+          - vol10
+  member-service:
+    build: ./member-service
+    ports:
+      - 8084:8084
+    environment:
+      - SERVER_ADDR=:8084
+      - PSQL_HOST=vol10
+      - PSQL_PORT=5432
+      - PSQL_USER=postgres
+      - PSQL_PASSWORD=postgres
+      - PSQL_DBNAME=vol10
+      - PSQL_SSLMODE=disable
+      - PSQL_CONNECT_TIMEOUT=10
+      - PSQL_CONNECT_WAIT_TIME=10
+      - PSQL_CONNECT_ATTEMPTS=3
+    networks:
+      - vol10-networks 
+    depends_on:
+      - vol10
+  vol10:
+    image: postgres:16-alpine
+    container_name: vol10
+    ports: 
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "vol10"
+    networks:
+      - vol10-networks
+    volumes:
+      - .data:/var/lib/postgresql/data
+
+networks:
+  vol10-networks:
+    external:
+      true

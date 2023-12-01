@@ -1,10 +1,10 @@
 FROM golang:1.21.4
 
-WORKDIR /app/project-service
+WORKDIR /app/user-service
 
 COPY . .
 
-RUN go build -o project-service ./cmd/app/main.go
+RUN go build -o user-service ./cmd/app/main.go
 
 ENV SERVER_ADDR=8081
 ENV PSQL_HOST=
@@ -21,4 +21,4 @@ ENV PSQL_CLOSE_TIMEOUT=
 
 EXPOSE ${SERVER_ADDR}
 
-CMD ["./project-service"]
+CMD ["./user-service"]
