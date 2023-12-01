@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/domain"
+	"github.com/schema-creator/services/member-service/internal/domain"
 )
 
 type memberRepo struct {

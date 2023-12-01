@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	image "github.com/Hack-Hack-geek-Vol10/services/image-service/api/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/domain"
-	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/infra"
+	image "github.com/schema-creator/services/image-service/api/v1"
+	"github.com/schema-creator/services/image-service/internal/domain"
+	"github.com/schema-creator/services/image-service/internal/infra"
 	"google.golang.org/grpc/status"
 )
 

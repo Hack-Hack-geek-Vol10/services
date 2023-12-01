@@ -7,7 +7,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
-	"github.com/Hack-Hack-geek-Vol10/services/image-service/internal/domain"
+	"github.com/schema-creator/services/image-service/internal/domain"
 )
 
 type imageRepo struct {

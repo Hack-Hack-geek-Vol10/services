@@ -8,11 +8,11 @@ import (
 	"os/signal"
 	"time"
 
-	user "github.com/Hack-Hack-geek-Vol10/services/user-service/api/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/user-service/cmd/config"
-	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/infra"
-	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/usecase"
 	"github.com/murasame29/db-conn/sqldb/postgres"
+	user "github.com/schema-creator/services/user-service/api/v1"
+	"github.com/schema-creator/services/user-service/cmd/config"
+	"github.com/schema-creator/services/user-service/internal/infra"
+	"github.com/schema-creator/services/user-service/internal/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

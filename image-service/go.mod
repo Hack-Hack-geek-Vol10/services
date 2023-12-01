@@ -1,4 +1,4 @@
-module github.com/Hack-Hack-geek-Vol10/services/image-service
+module github.com/schema-creator/services/image-service
 
 go 1.21.4
 

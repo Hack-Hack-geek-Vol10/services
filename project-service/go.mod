@@ -1,4 +1,4 @@
-module github.com/Hack-Hack-geek-Vol10/services/project-service
+module github.com/schema-creator/services/project-service
 
 go 1.21.4
 

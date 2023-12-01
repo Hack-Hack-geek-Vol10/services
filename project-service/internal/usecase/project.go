@@ -3,10 +3,10 @@ package usecase
 import (
 	"context"
 
-	project "github.com/Hack-Hack-geek-Vol10/services/project-service/api/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/domain"
-	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/infra"
 	"github.com/google/uuid"
+	project "github.com/schema-creator/services/project-service/api/v1"
+	"github.com/schema-creator/services/project-service/internal/domain"
+	"github.com/schema-creator/services/project-service/internal/infra"
 )
 
 type projectService struct {

@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	user "github.com/Hack-Hack-geek-Vol10/services/user-service/api/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/domain"
-	"github.com/Hack-Hack-geek-Vol10/services/user-service/internal/infra"
+	user "github.com/schema-creator/services/user-service/api/v1"
+	"github.com/schema-creator/services/user-service/internal/domain"
+	"github.com/schema-creator/services/user-service/internal/infra"
 )
 
 type userService struct {

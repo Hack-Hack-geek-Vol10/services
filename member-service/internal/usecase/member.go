@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 
-	member "github.com/Hack-Hack-geek-Vol10/services/member-service/api/v1"
-	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/domain"
-	"github.com/Hack-Hack-geek-Vol10/services/member-service/internal/infra"
+	member "github.com/schema-creator/services/member-service/api/v1"
+	"github.com/schema-creator/services/member-service/internal/domain"
+	"github.com/schema-creator/services/member-service/internal/infra"
 )
 
 type memberService struct {
