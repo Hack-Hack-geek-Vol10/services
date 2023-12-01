@@ -5,7 +5,7 @@ on:
     branches:
       - develop
     paths:
-       - 'pkg/grpc/image-service/**'
+       - "image-service/api/**"
 
 permissions:
   actions: write
@@ -29,7 +29,7 @@ jobs:
       - name: copy file to home
         run: |
           mkdir -p $HOME/image-service
-          cp -r pkg/grpc/image-service/* $HOME/image-service
+          cp -r image-service/api/* $HOME/image-service
     
       - name: Checkout another repo
         uses: actions/checkout@v3

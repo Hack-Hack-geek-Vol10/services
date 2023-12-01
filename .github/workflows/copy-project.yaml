@@ -5,7 +5,7 @@ on:
     branches:
       - develop
     paths:
-      - 'pkg/grpc/project-service/**'
+      - 'project-service/api/**'
 
 permissions:
   actions: write
@@ -29,7 +29,7 @@ jobs:
       - name: copy file to home
         run: |
           mkdir -p $HOME/project-service
-          cp -r pkg/grpc/project-service/* $HOME/project-service
+          cp -r project-service/api/* $HOME/project-service
     
       - name: Checkout another repo
         uses: actions/checkout@v3
