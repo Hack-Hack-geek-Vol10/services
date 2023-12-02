@@ -11,6 +11,7 @@ WORKDIR /app/migrate-service
 COPY --from=builder /app/migrate-service/migrate-service /app/migrate-service/migrate-service
 
 ENV SERVER_ADDR=8084
+ENV TOKEN=
 ENV PSQL_HOST=
 ENV PSQL_PORT=
 ENV PSQL_USER=

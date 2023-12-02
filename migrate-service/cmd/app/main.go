@@ -2,23 +2,15 @@ package main
 
 import (
 	"context"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/labstack/echo/v4"
 	dbconn "github.com/murasame29/db-conn/sqldb/postgres"
 	"github.com/schema-creator/services/migrate-service/cmd/config"
 )
-
-func init() {
-	config.LoadEnv()
-}
 
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -41,42 +33,34 @@ func main() {
 		panic(err)
 	}
 
-	e := echo.New()
-	e.POST("/migrate", func(c echo.Context) error {
+	router := gin.Default()
+
+	router.Use(func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("Authorization")
+		if token != config.Config.Server.Token {
+			ctx.AbortWithStatusJSON(401, gin.H{
+				"message": "unauthorized",
+			})
+		}
+	})
+
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "ok",
+		})
+	})
+
+	router.POST("/migrate", func(c *gin.Context) {
 		driver, err := postgres.WithInstance(db, &postgres.Config{})
 		if err != nil {
-			return err
+			c.AbortWithError(500, err)
 		}
 		m, err := migrate.NewWithDatabaseInstance(
 			"file://migrations",
 			"postgres", driver)
 		if err := m.Up(); err != nil {
-			return err
+			c.AbortWithError(500, err)
 		}
 		c.JSON(200, "success migrate")
-		return nil
 	})
-
-	srv := &http.Server{
-		Addr:    ":" + config.Config.Server.ServerAddr,
-		Handler: e,
-	}
-
-	go func() {
-		log.Println("server started at", config.Config.Server.ServerAddr)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Println(err)
-		}
-	}()
-
-	q := make(chan os.Signal, 1)
-	signal.Notify(q, os.Interrupt)
-	<-q
-
-	ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Println(err)
-	}
 }

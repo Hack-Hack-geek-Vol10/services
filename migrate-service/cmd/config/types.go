@@ -9,6 +9,7 @@ type config struct {
 
 type Server struct {
 	ServerAddr string `env:"SERVER_ADDR" envDefault:"8080"`
+	Token      string `env:"TOKEN" envDefault:"qwertyuiop"`
 }
 
 type Database struct {

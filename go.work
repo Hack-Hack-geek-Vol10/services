@@ -1,3 +1,10 @@
 go 1.21.4
 
-use ./token-service
+use (
+  ./image-service
+  ./member-service
+  ./migrate-service
+  ./project-service
+  ./token-service
+  ./user-service
+)
