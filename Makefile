@@ -1,26 +1,22 @@
-genproto:
-	sh scripts/image.sh
-	sh scripts/member.sh
-	sh scripts/project.sh
-	sh scripts/token.sh
-	sh scripts/user.sh
+migrateup:
+	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose up
 
-runuser:
-	go run cmd/app/user-service/main.go
+migrateup1:
+	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose up 1
 
-runproject:
-	go run cmd/app/project-service/main.go
+migratedown:
+	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose down
 
-runmember:
-	go run cmd/app/member-service/main.go
+migratedown1:
+	migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose down 1
 
-runimage:
-	go run cmd/app/image-service/main.go
+run:
+	sh cmd/scripts/start.sh
 
-runtoken:
-	go run cmd/app/token-service/main.go
+down:
+	docker-compose down
 
-test:
-	go test -v ./... --cover
+newnetwork:
+	docker network create vol10-networks
 
-.PHONY: genproto runuser runproject runmember runimage runtoken test
+.PHONY: migrateup migrateup1 migratedown migratedown1 run down newnetwork

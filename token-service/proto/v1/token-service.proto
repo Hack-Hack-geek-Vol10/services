@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option go_package = "api/token-service/v1";
+
+package token.v1;
+
+// service ってのが、gRPCサービスのハンドラとしての役割を果たす
+// ここには、gRPCサービスのメソッドを定義する
+// 書き方例
+// rpc GetToken (GetTokenRequest) returns (GetTokenResponse);
+//  ↑　　　↑　　　　　　↑　　　　　　　　　　　　　↑
+// 呪い　メソッド名　　リクエスト型　　　　　レスポンス型
+service TokenService {
+  rpc CreateToken (CreateTokenRequest) returns (CreateTokenResponse);
+  rpc GetToken (GetTokenRequest) returns (GetTokenResponse);
+  rpc DeleteToken (DeleteTokenRequest) returns (DeleteTokenResponse);
+}
+
+// リクエスト, レスポンスの型を定義する
+// ここで定義した型は、gRPCサービスのメソッドの引数や戻り値として使える
+// 書き方例
+// まじない　　型名
+// 　↓   　　　　↓　　　
+// https://qiita.com/yukina-ge/items/98fe190cef2024d45fbd
+
+
+
+message CreateTokenRequest {
+  string project_id = 1;
+  string authority = 2;
+}
+
+message CreateTokenResponse {
+  string token = 1;
+}
+
+message GetTokenRequest {
+  string token = 1;
+}
+
+message GetTokenResponse {
+  string token_id = 1;
+  string project_id = 2;
+  string authority = 3;
+}
+
+message DeleteTokenRequest {
+  string project_id = 1;
+}
+
+message DeleteTokenResponse {
+  string project_id = 1;
+}
