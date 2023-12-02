@@ -25,6 +25,12 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
+
+    - name: Translate secrets of base64 into json
+      env:
+        JSON_DECODE: ${{ secrets.CREDENTIALS_JSON }}
+      run: |
+        echo -n $JSON_DECODE | base64 --decode > ./image-service/sa.json
     
     - name: Build
       run: |
