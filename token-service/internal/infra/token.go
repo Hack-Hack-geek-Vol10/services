@@ -5,7 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
-	"github.com/schema-creator/services/project-service/internal/domain"
+	"github.com/schema-creator/services/token-service/internal/domain"
 )
 
 type tokenRepo struct {

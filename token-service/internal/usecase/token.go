@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/schema-creator/services/project-service/internal/domain"
 	token "github.com/schema-creator/services/token-service/api/v1"
+	"github.com/schema-creator/services/token-service/internal/domain"
 	"github.com/schema-creator/services/token-service/internal/infra"
 )
 
@@ -27,10 +27,23 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateProject
 		Authority: arg.Authority,
 	}
 
-	result, err := t.tokenRepo.Create(ctx, param)
+	_, err := t.tokenRepo.Create(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &token.TokenDetails{}
+	return &token.CreateTokenResponse{
+		Token: param.TokenID,
+	}, nil
+}
+
+func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest) (*token.GetTokenResponse, error) {
+	tokenInfo, err := t.tokenRepo.ReadOne(ctx, arg.Token)
+	if err != nil {
+		return nil, err
+	}
+
+	return &token.GetTokenResponse{
+		Token: tokenInfo.TokenID,
+	}, nil
 }
