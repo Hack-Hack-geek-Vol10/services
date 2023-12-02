@@ -1,10 +1,14 @@
-FROM golang:1.21.4
+FROM golang:1.21.4 AS builder
 
 WORKDIR /app/user-service
 
 COPY . .
 
 RUN go build -o user-service ./cmd/app/main.go
+
+FROM alpine:3.14.2 AS runner
+WORKDIR /app/user-service
+COPY --from=builder /app/user-service/user-service /app/user-service/user-service
 
 ENV SERVER_ADDR=8081
 ENV PSQL_HOST=
