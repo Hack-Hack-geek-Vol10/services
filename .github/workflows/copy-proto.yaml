@@ -31,6 +31,7 @@ jobs:
         run: |
           git diff --name-only origin/main...HEAD > diff.txt
           DIFF_RESULT=$(cat diff.txt)
+          cat diff.txt
           echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
       
       # 変更があった場合にのみ実行されるファイルコピー
