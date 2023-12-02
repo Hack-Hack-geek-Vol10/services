@@ -10,18 +10,18 @@ service ImageService {
 }
 
 message UploadImageRequest {
-  string key = 1;
+  string file_name = 1;
   string content_type = 2;
   bytes data = 3;
 }
 
 message UploadImageResponse {
-  string key = 1;
+  string file_name = 1;
   string path = 2;
 }
 
 message DeleteImageRequest {
-  string key = 1;
+  string file_name = 1;
 }
 
 message DeleteImageResponse {
