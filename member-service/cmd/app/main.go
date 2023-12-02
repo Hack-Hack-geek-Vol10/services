@@ -56,7 +56,7 @@ func main() {
 
 	// 3. 作成したgRPCサーバーを、8080番ポートで稼働させる
 	go func() {
-		log.Printf("start gRPC server port: %v", config.Config.Server.ServerAddr)
+		log.Printf("start gRPC server port: %v", ":"+config.Config.Server.ServerAddr)
 		s.Serve(listener)
 	}()
 
