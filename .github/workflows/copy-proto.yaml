@@ -34,6 +34,7 @@ jobs:
           echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
           
       - name: Check for specific file changes
+        if: steps.git_diff.outputs.DIFF_RESULT != ''
         id: check_files
         run: |
           userdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'user-service/api'
