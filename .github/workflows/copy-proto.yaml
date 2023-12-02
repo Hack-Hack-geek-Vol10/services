@@ -36,10 +36,14 @@ jobs:
       - name: Check for specific file changes
         id: check_files
         run: |
-          echo "::set-output name=user-changed::$(if -n "${'${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'user-service/api'}"; then echo 'true'; else echo 'false'; fi)"
-          echo "::set-output name=project-changed::$(if -n "${'${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'project-service/api'}"; then echo 'true'; else echo 'false'; fi)"
-          echo "::set-output name=image-changed::$(if -n "${'${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'image-service/api'}"; then echo 'true'; else echo 'false'; fi)"
-          echo "::set-output name=member-changed::$(if -n "${'${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'member-service/api'}"; then echo 'true'; else echo 'false'; fi)"
+          userdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'user-service/api'
+          echo "::set-output name=user-changed::$(if -n "${userdiff}"; then echo 'true'; else echo 'false'; fi)"
+          projectdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'project-service/api'
+          echo "::set-output name=project-changed::$(if -n "${projectdiff}"; then echo 'true'; else echo 'false'; fi)"
+          imagediff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'image-service/api'
+          echo "::set-output name=image-changed::$(if -n "${imagediff}"; then echo 'true'; else echo 'false'; fi)"
+          memberdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'member-service/api'
+          echo "::set-output name=member-changed::$(if -n "${memberdiff}"; then echo 'true'; else echo 'false'; fi)"
       
       - name: if user-service/api changed then copy generated file to $HOME/user-service
         if: steps.check_files.outputs.user-changed == 'true'
