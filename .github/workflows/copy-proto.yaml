@@ -10,6 +10,7 @@ on:
       - 'member-service/api/**'
       - 'image-service/api/**'
       - 'project-service/api/**'
+      - 'token-service/api/**'
 
       
 jobs:
@@ -39,6 +40,9 @@ jobs:
 
           mkdir -p $HOME/image-service
           cp -r image-service/api/* $HOME/image-service
+
+          mkdir -p $HOME/token-service
+          cp -r token-service/api/* $HOME/token-service
 
       - name: Checkout BFF repository
         uses: actions/checkout@v3
@@ -79,7 +83,7 @@ jobs:
           gh pr create \
             --title ":robot: copy grpc [bot]" \
             --body ":robot: copy grp[bot]" \
-            --repo Hack-Hack-geek-Vol10/graph-gateway \
+            --repo schema-creator/graph-gateway \
             --base ft/wfc-bff \
             --head ft/copy-file/${{github.sha}} \
             --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
