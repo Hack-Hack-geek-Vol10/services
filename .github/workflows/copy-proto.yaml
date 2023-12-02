@@ -37,32 +37,32 @@ jobs:
       # ①新しくサービスが増えたらこの部分を追加する
       - name: test
         run: |
-          echo ${{ steps.collect-diff.outputs.DIFF_RESULT }}
-          echo ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep user-service/api
-          echo ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep project-service/api
-          echo ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep image-service/api
-          echo ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep member-service/api
+          echo ${{ steps.git_diff.outputs.DIFF_RESULT }}
+          echo ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep user-service/api
+          echo ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep project-service/api
+          echo ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep image-service/api
+          echo ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep member-service/api
+
       - name: if user-service/api changed then copy generated file to $HOME/user-service
-        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep user-service/api}
-          
+        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep user-service/api}
         run: |
           mkdir -p $HOME/user-service
           cp -r user-service/api/* $HOME/user-service
 
       - name: if project-service/api changed then copy generated file to $HOME/project-service
-        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep project-service/api}
+        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep project-service/api}
         run: |
           mkdir -p $HOME/project-service
           cp -r project-service/api/* $HOME/project-service
       
       - name: if image-service/api changed then copy generated file to $HOME/image-service
-        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep image-service/api}
+        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep image-service/api}
         run: |
             mkdir -p $HOME/image-service
             cp -r image-service/api/* $HOME/image-service
 
       - name: if member-service/api changed then copy generated file to $HOME/member-service
-        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep member-service/api}
+        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep member-service/api}
         run: |
             mkdir -p $HOME/member-service
             cp -r member-service/api/* $HOME/member-service
