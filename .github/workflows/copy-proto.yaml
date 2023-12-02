@@ -32,28 +32,36 @@ jobs:
           git diff --name-only origin/develop...HEAD > diff.txt
           DIFF_RESULT=$(cat diff.txt)
           echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
-
-      - name: if user-service/api changed then copy generated file to $HOME/user-service
-        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep user-service/api}
+          
+      - name: Check for specific file changes
+        id: check_files
         run: |
-          echo "${{ steps.git_diff.outputs.DIFF_RESULT }} | grep user-service/api"
+          echo "::set-output name=user-changed::$(if echo '${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'user-service/api'; then echo 'true'; else echo 'false'; fi)"
+          echo "::set-output name=project-changed::$(if echo '${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'project-service/api'; then echo 'true'; else echo 'false'; fi)"
+          echo "::set-output name=image-changed::$(if echo '${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'image-service/api'; then echo 'true'; else echo 'false'; fi)"
+          echo "::set-output name=member-changed::$(if echo '${{ steps.git_diff.outputs.DIFF_RESULT }}' | grep -q 'member-service/api'; then echo 'true'; else echo 'false'; fi)"
+      
+      - name: if user-service/api changed then copy generated file to $HOME/user-service
+        if: steps.check_files.outputs.user-changed == 'true'
+        run: |
           mkdir -p $HOME/user-service
           cp -r user-service/api/* $HOME/user-service
-
+      
       - name: if project-service/api changed then copy generated file to $HOME/project-service
-        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep project-service/api}
+        if: steps.check_files.outputs.project-changed == 'true'
         run: |
           mkdir -p $HOME/project-service
           cp -r project-service/api/* $HOME/project-service
+          
       
       - name: if image-service/api changed then copy generated file to $HOME/image-service
-        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep image-service/api}
+        if: steps.check_files.outputs.image-changed == 'true'
         run: |
             mkdir -p $HOME/image-service
             cp -r image-service/api/* $HOME/image-service
 
       - name: if member-service/api changed then copy generated file to $HOME/member-service
-        if: ${-n ${{ steps.git_diff.outputs.DIFF_RESULT }} | grep member-service/api}
+        if: steps.check_files.outputs.member-changed == 'true'
         run: |
             mkdir -p $HOME/member-service
             cp -r member-service/api/* $HOME/member-service
