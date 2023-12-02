@@ -26,6 +26,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v2
 
+    - name: Build 
+      run: |
+        cd user-service
+        docker build -t ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }} .
 
     - name: login to harbor registry
       uses: docker/login-action@v1
@@ -33,10 +37,9 @@ jobs:
         registry: ${{ secrets.HARBOR_REGISTRY  }}
         username: ${{ secrets.HARBOR_USERNAME  }}
         password: ${{ secrets.HARBOR_PASSWORD }}
-    - name: Build and push
+        
+    - name: push to harbor registry
       run: |
-        cd user-service
-        docker build -t ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }} .
         docker push ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}
   deploy:
     needs: build
