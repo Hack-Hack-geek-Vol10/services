@@ -58,7 +58,7 @@ func main() {
 	})
 
 	srv := &http.Server{
-		Addr:    config.Config.Server.ServerAddr,
+		Addr:    ":" + config.Config.Server.ServerAddr,
 		Handler: e,
 	}
 
