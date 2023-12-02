@@ -3,6 +3,7 @@ FROM golang:1.21.4 AS builder
 WORKDIR /app/migrate-service
 
 COPY . .
+COPY ../cmd/migrations ./migrations
 
 RUN go build -o migrate-service ./cmd/app/main.go
 
