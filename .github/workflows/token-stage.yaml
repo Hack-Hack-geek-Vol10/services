@@ -5,7 +5,7 @@ on:
     branches:
       - develop
     paths:
-      - "member-service/**"
+      - "token-service/**"
 
 permissions:
   actions: write
@@ -37,7 +37,7 @@ jobs:
         registry: ${{ secrets.HARBOR_REGISTRY  }}
         username: ${{ secrets.HARBOR_USERNAME  }}
         password: ${{ secrets.HARBOR_PASSWORD }}
-      
+
     - name: push to harbor registry
       run: |
         docker push ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}
@@ -60,7 +60,7 @@ jobs:
       - name: Change manifest
         run: |
           cd backend/stage
-          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}"' 'member-service.yaml'
+          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}"' 'token-service.yaml'
       
       - name: push repository
         run: |
