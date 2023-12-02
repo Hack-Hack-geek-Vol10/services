@@ -88,7 +88,7 @@ jobs:
         run: |
           git add .
           git commit -m "feat: copy grpc to graph-gateway"
-          git push origin ft/copy-grpc${{github.sha}}user
+          git push origin ft/copy-file/${{github.sha}}
       
       - name: create Pull Request to frontend
         run: |
@@ -97,7 +97,7 @@ jobs:
             --body ":robot: copy grp[bot]" \
             --repo Hack-Hack-geek-Vol10/graph-gateway \
             --base ft/wfc-bff \
-            --head ft/copy-grpc${{github.sha}}user \
+            --head ft/copy-file/${{github.sha}} \
             --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
