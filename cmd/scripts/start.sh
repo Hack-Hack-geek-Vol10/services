@@ -10,4 +10,4 @@ fi
 )
 
 echo "マイグレートを実行します"
-migrate -path cmd/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose up
+migrate -path migrate-service/migrations -database "postgresql://postgres:postgres@localhost:5432/vol10?sslmode=disable" -verbose up
