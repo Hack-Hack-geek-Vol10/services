@@ -28,49 +28,17 @@ jobs:
       - name:
         id: diff
         run: |
-          # userdiff=$(git diff --name-only origin/develop | grep 'user-service/api')
-          # projectdiff=$(git diff --name-only origin/develop | grep 'project-service/api')
-          # memberdiff=$(git diff --name-only origin/develop | grep 'member-service/api')
-          # imagediff=$(git diff --name-only origin/develop | grep 'image-service/api')
+          mkdir -p $HOME/user-service
+          cp -r user-service/api/* $HOME/user-service
 
-          # if [ -n "$userdiff" ]; then
-          #   mkdir -p $HOME/user-service
-          #   cp -r user-service/api/* $HOME/user-service
-          # fi
+          mkdir -p $HOME/project-service
+          cp -r project-service/api/* $HOME/project-service
 
-          # if [ -n "$projectdiff" ]; then
-          #   mkdir -p $HOME/project-service
-          #   cp -r project-service/api/* $HOME/project-service
-          # fi
+          mkdir -p $HOME/member-service
+          cp -r member-service/api/* $HOME/member-service
 
-          # if [ -n "$memberdiff" ]; then
-          #   mkdir -p $HOME/member-service
-          #   cp -r member-service/api/* $HOME/member-service
-          # fi
-
-          # if [ -n "$imagediff" ]; then
-          #   mkdir -p $HOME/image-service
-          #   cp -r image-service/api/* $HOME/image-service
-          # fi
-
-          # if [ -n "$userdiff" ] || [ -n "$projectdiff" ] || [ -n "$memberdiff" ] || [ -n "$imagediff" ]; then
-          #   echo "true"
-          # else
-          #   echo "false"
-          # fi
-          userdiff=$(git diff --name-only origin/develop | grep 'user-service/api' 2>&1)
-          projectdiff=$(git diff --name-only origin/develop | grep 'project-service/api' 2>&1)
-          memberdiff=$(git diff --name-only origin/develop | grep 'member-service/api' 2>&1)
-          imagediff=$(git diff --name-only origin/develop | grep 'image-service/api' 2>&1)
-
-          if [[ $userdiff == *"fatal"* ]] || [[ $projectdiff == *"fatal"* ]] || [[ $memberdiff == *"fatal"* ]] || [[ $imagediff == *"fatal"* ]]; then
-            echo "Error: $userdiff"
-            echo "Error: $projectdiff"
-            echo "Error: $memberdiff"
-            echo "Error: $imagediff"
-            exit 1
-          fi
-
+          mkdir -p $HOME/image-service
+          cp -r image-service/api/* $HOME/image-service
 
       - name: Checkout BFF repository
         uses: actions/checkout@v3
