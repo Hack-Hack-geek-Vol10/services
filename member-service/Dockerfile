@@ -6,7 +6,7 @@ COPY . .
 
 RUN go build -o member-service ./cmd/app/main.go
 
-FROM alpine AS runner
+FROM ubuntu AS runner
 WORKDIR /app/member-service
 COPY --from=builder /app/member-service/member-service /app/member-service/member-service
 

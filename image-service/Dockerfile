@@ -7,7 +7,7 @@ COPY sa.json .
 
 RUN go build -o image-service ./cmd/app/main.go
 
-FROM alpine AS runner
+FROM ubuntu AS runner
 WORKDIR /app/image-service
 COPY --from=builder /app/image-service/image-service /app/image-service/image-service
 
