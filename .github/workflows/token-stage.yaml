@@ -28,7 +28,7 @@ jobs:
     
     - name: Build and push
       run: |
-        cd member-service
+        cd token-service
         docker build -t ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }} .
 
     - name: login to harbor registry
