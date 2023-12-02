@@ -12,6 +12,10 @@ import (
 	"github.com/schema-creator/services/migrate-service/cmd/config"
 )
 
+func init() {
+	config.LoadEnv()
+}
+
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
