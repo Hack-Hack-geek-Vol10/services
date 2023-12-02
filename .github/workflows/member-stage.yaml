@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - "member-service/**"
+    # paths:
+    #   - "member-service/**"
 
 permissions:
   actions: write
