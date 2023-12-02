@@ -8,8 +8,9 @@ RUN go build -o migrate-service ./cmd/app/main.go
 
 FROM ubuntu AS runner
 WORKDIR /app/migrate-service
-COPY --from=builder /app/migrate-service/migrate-service /app/migrate-service/migrate-service
 
+COPY --from=builder /app/migrate-service/migrate-service /app/migrate-service/migrate-service
+COPY ./migrations /app/migrate-service/migrations
 ENV SERVER_ADDR=8084
 ENV TOKEN=
 ENV PSQL_HOST=

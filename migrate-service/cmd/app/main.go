@@ -61,7 +61,7 @@ func main() {
 			c.AbortWithError(500, err)
 		}
 		m, err := migrate.NewWithDatabaseInstance(
-			"file://app/migrations",
+			"file://migrations",
 			"postgres", driver)
 		if err != nil {
 			c.AbortWithError(500, err)
