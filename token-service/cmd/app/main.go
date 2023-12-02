@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/murasame29/db-conn/sqldb/postgres"
-	project "github.com/schema-creator/services/project-service/api/v1"
-	"github.com/schema-creator/services/project-service/cmd/config"
-	"github.com/schema-creator/services/project-service/internal/infra"
-	"github.com/schema-creator/services/project-service/internal/usecase"
+	token "github.com/schema-creator/services/token-service/api/v1"
+	"github.com/schema-creator/services/token-service/cmd/config"
+	"github.com/schema-creator/services/token-service/internal/infra"
+	"github.com/schema-creator/services/token-service/internal/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -50,7 +50,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	project.RegisterProjectServiceServer(s, usecase.NewProjectService(infra.NewProjectRepo(db)))
+	token.RegisterTokenServiceServer(s, usecase.NewTokenService(infra.NewTokenRepo(db)))
 
 	reflection.Register(s)
 
