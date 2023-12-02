@@ -7,7 +7,7 @@ on:
     paths:
       # ①新しくサービスが増えたらこの部分を追加する
       - 'user-service/api/**'
-      - 'image-service/api/**'
+      - 'member-service/api/**'
       - 'image-service/api/**'
       - 'project-service/api/**'
 
@@ -25,94 +25,85 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Collect diff
-        id: git_diff
+      - name:
+        id: diff
         run: |
-          echo ${git diff --name-only origin/develop...HEAD}
-          DIFF_RESULT=$(cat diff.txt)
-          echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
-          
-      # - name: Check for specific file changes
-      #   if: steps.git_diff.outputs.DIFF_RESULT != ''
-      #   id: check_files
-      #   run: |
-      #     echo "Files changed: ${{ steps.git_diff.outputs.DIFF_RESULT }}"
-      #     userdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'user-service/api'
-      #     echo "::set-output name=user-changed::$(if -n "${userdiff}"; then echo 'true'; else echo 'false'; fi)"
-      #     projectdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'project-service/api'
-      #     echo "::set-output name=project-changed::$(if -n "${projectdiff}"; then echo 'true'; else echo 'false'; fi)"
-      #     imagediff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'image-service/api'
-      #     echo "::set-output name=image-changed::$(if -n "${imagediff}"; then echo 'true'; else echo 'false'; fi)"
-      #     memberdiff="${{ steps.git_diff.outputs.DIFF_RESULT }}" | grep 'member-service/api'
-      #     echo "::set-output name=member-changed::$(if -n "${memberdiff}"; then echo 'true'; else echo 'false'; fi)"
-      
-      # - name: if user-service/api changed then copy generated file to $HOME/user-service
-      #   if: steps.check_files.outputs.user-changed == 'true'
-      #   run: |
-      #     mkdir -p $HOME/user-service
-      #     cp -r user-service/api/* $HOME/user-service
-      
-      # - name: if project-service/api changed then copy generated file to $HOME/project-service
-      #   if: steps.check_files.outputs.project-changed == 'true'
-      #   run: |
-      #     mkdir -p $HOME/project-service
-      #     cp -r project-service/api/* $HOME/project-service
-          
-      
-      # - name: if image-service/api changed then copy generated file to $HOME/image-service
-      #   if: steps.check_files.outputs.image-changed == 'true'
-      #   run: |
-      #       mkdir -p $HOME/image-service
-      #       cp -r image-service/api/* $HOME/image-service
+          userdiff = "$(git diff --name-only origin/develop) | grep user-service/api"
+          projectdiff = "$(git diff --name-only origin/develop) | grep project-service/api"
+          memberdiff = "$(git diff --name-only origin/develop) | grep member-service/api"
+          image = "$(git diff --name-only origin/develop) | grep image-service/api"
 
-      # - name: if member-service/api changed then copy generated file to $HOME/member-service
-      #   if: steps.check_files.outputs.member-changed == 'true'
-      #   run: |
-      #       mkdir -p $HOME/member-service
-      #       cp -r member-service/api/* $HOME/member-service
+          if [ -n "$userdiff" ]; then
+            mkdir -p $HOME/user-service
+            cp -r user-service/api/* $HOME/user-service
+          fi
+
+          if [ -n "$projectdiff" ]; then
+            mkdir -p $HOME/project-service
+            cp -r project-service/api/* $HOME/project-service
+          fi
+
+          if [ -n "$memberdiff" ]; then
+            mkdir -p $HOME/member-service
+            cp -r member-service/api/* $HOME/member-service
+          fi
+
+          if [ -n "$imagediff" ]; then
+            mkdir -p $HOME/image-service
+            cp -r image-service/api/* $HOME/image-service
+          fi
+
+          if [ -n "$userdiff" ] || [ -n "$projectdiff" ] || [ -n "$memberdiff" ] || [ -n "$imagediff" ]; then
+            echo "true"
+          else
+            echo "false"
+          fi
       
-      # - name: Checkout BFF repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: schema-creator/graph-gateway
-      #     token: ${{ secrets.GH_PAT }}
-      #     ref: develop
+      - name: Checkout BFF repository
+        uses: actions/checkout@v3
+        with:
+          repository: schema-creator/graph-gateway
+          token: ${{ secrets.GH_PAT }}
+          ref: develop
       
-      # - name: Create a branch when it doesn't exist
-      #   run: |
-      #     branch_is_existing=$(
-      #       git fetch origin ft/wfc-bff &&
-      #       echo true ||
-      #       echo false
-      #     )
-      #     if [ $branch_is_existing = 'false' ]; then
-      #       git switch -c ft/wfc-bff
-      #       git push origin ft/wfc-bff
-      #     else
-      #       echo "branch is existing"
-      #     fi
+      - name: Create a branch when it doesn't exist
+        if: steps.diff.outputs.diff == 'true'
+        run: |
+          branch_is_existing=$(
+            git fetch origin ft/wfc-bff &&
+            echo true ||
+            echo false
+          )
+          if [ $branch_is_existing = 'false' ]; then
+            git switch -c ft/wfc-bff
+            git push origin ft/wfc-bff
+          else
+            echo "branch is existing"
+          fi
       
-      # # $HOMEにコピーしたファイルをコミットする
-      # - name: copy file to gateways
-      #   run: |
-      #     git switch -c ft/copy-file/${{github.sha}}
-      #     cp -r $HOME/*-service/* pkg/grpc/
+      # $HOMEにコピーしたファイルをコミットする
+      - name: copy file to gateways
+        if: steps.diff.outputs.diff == 'true'
+        run: |
+          git switch -c ft/copy-file/${{github.sha}}
+          cp -r $HOME/*-service/* pkg/grpc/
       
-      # - name: commit and push changes
-      #   run: |
-      #     git add .
-      #     git commit -m "feat: copy grpc to graph-gateway"
-      #     git push origin ft/copy-file/${{github.sha}}
+      - name: commit and push changes
+        if: steps.diff.outputs.diff == 'true'
+        run: |
+          git add .
+          git commit -m "feat: copy grpc to graph-gateway"
+          git push origin ft/copy-file/${{github.sha}}
       
-      # - name: create Pull Request to frontend
-      #   run: |
-      #     gh pr create \
-      #       --title ":robot: copy grpc [bot]" \
-      #       --body ":robot: copy grp[bot]" \
-      #       --repo Hack-Hack-geek-Vol10/graph-gateway \
-      #       --base ft/wfc-bff \
-      #       --head ft/copy-file/${{github.sha}} \
-      #       --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_PAT }}
+      - name: create Pull Request to frontend
+        if: steps.diff.outputs.diff == 'true'
+        run: |
+          gh pr create \
+            --title ":robot: copy grpc [bot]" \
+            --body ":robot: copy grp[bot]" \
+            --repo Hack-Hack-geek-Vol10/graph-gateway \
+            --base ft/wfc-bff \
+            --head ft/copy-file/${{github.sha}} \
+            --reviewer "${{ github.event.head_commit.committer.username || github.triggering_actor }}"
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
