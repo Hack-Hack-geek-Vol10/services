@@ -29,7 +29,7 @@ jobs:
       - name: Collect diff
         id: git_diff
         run: |
-          git diff --name-only origin/main...HEAD > diff.txt
+          git diff --name-only origin/develop...HEAD > diff.txt
           DIFF_RESULT=$(cat diff.txt)
           cat diff.txt
           echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
