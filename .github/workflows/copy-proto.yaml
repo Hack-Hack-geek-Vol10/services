@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - develop
-    paths:
-      # ①新しくサービスが増えたらこの部分を追加する
-      - 'user-service/api/**'
-      - 'member-service/api/**'
-      - 'image-service/api/**'
-      - 'project-service/api/**'
-      - 'token-service/api/**'
+    # paths:
+    #   # ①新しくサービスが増えたらこの部分を追加する
+    #   - 'user-service/api/**'
+    #   - 'member-service/api/**'
+    #   - 'image-service/api/**'
+    #   - 'project-service/api/**'
+    #   - 'token-service/api/**'
 
       
 jobs:
@@ -29,20 +29,20 @@ jobs:
       - name:
         id: diff
         run: |
-          mkdir -p $HOME/user-service
-          cp -r user-service/api/* $HOME/user-service
+          mkdir -p $HOME/service/user-service
+          cp -r user-service/api/* $HOME/service/user-service
 
-          mkdir -p $HOME/project-service
-          cp -r project-service/api/* $HOME/project-service
+          mkdir -p $HOME/service/project-service
+          cp -r project-service/api/* $HOME/service/project-service
 
-          mkdir -p $HOME/member-service
-          cp -r member-service/api/* $HOME/member-service
+          mkdir -p $HOME/service/member-service
+          cp -r member-service/api/* $HOME/service/member-service
 
-          mkdir -p $HOME/image-service
-          cp -r image-service/api/* $HOME/image-service
+          mkdir -p $HOME/service/image-service
+          cp -r image-service/api/* $HOME/service/image-service
 
-          mkdir -p $HOME/token-service
-          cp -r token-service/api/* $HOME/token-service
+          mkdir -p $HOME/service/token-service
+          cp -r token-service/api/* $HOME/service/token-service
 
       - name: Checkout BFF repository
         uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
        
         run: |
           git switch -c ft/copy-file/${{github.sha}}
-          cp -r $HOME/*-service/* pkg/grpc/
+          cp -r $HOME/service/* pkg/grpc/
       
       - name: commit and push changes
         run: |
