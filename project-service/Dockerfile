@@ -6,7 +6,7 @@ COPY . .
 
 RUN go build -o project-service ./cmd/app/main.go
 
-FROM alpine:3.14 AS runner
+FROM alpine AS runner
 WORKDIR /app/project-service
 COPY --from=builder /app/project-service/project-service /app/project-service/project-service
 

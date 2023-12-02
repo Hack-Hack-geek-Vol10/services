@@ -7,7 +7,7 @@ COPY sa.json .
 
 RUN go build -o image-service ./cmd/app/main.go
 
-FROM apline:3.14 AS runner
+FROM apline AS runner
 WORKDIR /app/image-service
 COPY --from=builder /app/image-service/image-service /app/image-service/image-service
 
