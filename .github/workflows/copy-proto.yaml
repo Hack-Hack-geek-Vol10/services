@@ -28,10 +28,10 @@ jobs:
       - name:
         id: diff
         run: |
-          userdiff = "$(git diff --name-only origin/develop) | grep user-service/api"
-          projectdiff = "$(git diff --name-only origin/develop) | grep project-service/api"
-          memberdiff = "$(git diff --name-only origin/develop) | grep member-service/api"
-          image = "$(git diff --name-only origin/develop) | grep image-service/api"
+          userdiff = "${$(git diff --name-only origin/develop) | grep user-service/api}"
+          projectdiff = "${$(git diff --name-only origin/develop) | grep project-service/api}"
+          memberdiff = "${$(git diff --name-only origin/develop) | grep member-service/api}"
+          image = "${$(git diff --name-only origin/develop) | grep image-service/api}"
 
           if [ -n "$userdiff" ]; then
             mkdir -p $HOME/user-service
