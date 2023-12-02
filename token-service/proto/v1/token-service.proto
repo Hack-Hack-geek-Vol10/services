@@ -27,7 +27,7 @@ service TokenService {
 
 message CreateTokenRequest {
   string project_id = 1;
-  int32 authority = 2;
+  string authority = 2;
 }
 
 message CreateTokenResponse {
@@ -41,7 +41,7 @@ message GetTokenRequest {
 message GetTokenResponse {
   string token_id = 1;
   string project_id = 2;
-  int32 authority = 3;
+  string authority = 3;
 }
 
 message DeleteTokenRequest {

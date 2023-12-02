@@ -32,7 +32,7 @@ func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) err
 }
 
 func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
-	const query = `SELECT token_id,project_id,authority FROM tokens WHERE token = $1`
+	const query = `SELECT token_id,project_id,authority FROM tokens WHERE token_id = $1`
 	row := t.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
 	if err := row.Scan(&token.TokenID, &token.ProjectID, &token.Authority); err != nil {
@@ -43,7 +43,16 @@ func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.
 
 func (t *tokenRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
 	const query = `DELETE FROM tokens WHERE project_id = $1`
-	row := t.db.QueryRowContext(ctx, query, arg.ProjectID)
-
-	return row.Err()
+	row, err := t.db.ExecContext(ctx, query, arg.ProjectID)
+	if err != nil {
+		return err
+	}
+	count, err := row.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
 }

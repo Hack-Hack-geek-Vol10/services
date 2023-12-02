@@ -24,7 +24,7 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRe
 	param := domain.CreateTokenParam{
 		TokenID:   uuid.New().String(),
 		ProjectID: arg.ProjectId,
-		Authority: int(arg.Authority),
+		Authority: domain.Authority(arg.Authority),
 	}
 
 	err := t.tokenRepo.Create(ctx, param)
@@ -49,7 +49,7 @@ func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest)
 	return &token.GetTokenResponse{
 		TokenId:   tokenInfo.TokenID,
 		ProjectId: tokenInfo.ProjectID,
-		Authority: int32(tokenInfo.Authority),
+		Authority: string(tokenInfo.Authority),
 	}, nil
 }
 

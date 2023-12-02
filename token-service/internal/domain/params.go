@@ -1,9 +1,9 @@
 package domain
 
 type CreateTokenParam struct {
-	TokenID   string `json:"token_id"`
-	ProjectID string `json:"project_id"`
-	Authority int    `json:"authority"`
+	TokenID   string    `json:"token_id"`
+	ProjectID string    `json:"project_id"`
+	Authority Authority `json:"authority"`
 }
 
 type GetTokenParam struct {
