@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Hack-Hack-geek-Vol10/services/project-service/internal/domain"
 	"github.com/google/uuid"
+	"github.com/schema-creator/services/project-service/internal/domain"
 )
 
 type tokenRepo struct {
