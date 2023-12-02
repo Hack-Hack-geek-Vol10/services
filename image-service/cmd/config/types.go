@@ -8,7 +8,7 @@ type config struct {
 }
 
 type Server struct {
-	ServerAddr string `env:"SERVER_ADDR" envDefault:":8084"`
+	ServerAddr string `env:"SERVER_ADDR" envDefault:"8084"`
 }
 
 type Firebase struct {

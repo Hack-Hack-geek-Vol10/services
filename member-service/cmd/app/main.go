@@ -23,7 +23,7 @@ func init() {
 
 func main() {
 
-	listener, err := net.Listen("tcp", config.Config.Server.ServerAddr)
+	listener, err := net.Listen("tcp", ":"+config.Config.Server.ServerAddr)
 	if err != nil {
 		panic(err)
 	}

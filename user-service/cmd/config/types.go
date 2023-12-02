@@ -8,7 +8,7 @@ type config struct {
 }
 
 type Server struct {
-	ServerAddr string `env:"SERVER_ADDR" envDefault:":8081"`
+	ServerAddr string `env:"SERVER_ADDR" envDefault:"8081"`
 }
 
 type Database struct {
@@ -19,9 +19,9 @@ type Database struct {
 	DBName   string `env:"PSQL_DBNAME" envDefault:"vol10"`
 	SSLMode  string `env:"PSQL_SSLMODE" envDefault:"disable"`
 
-	ConnectTimeout  int  `env:"PSQL_CONNECT_TIMEOUT" envDefault:"10"`
-	ConnectWaitTime int  `env:"PSQL_CONNECT_WAIT_TIME" envDefault:"10"`
-	ConnectAttempts int  `env:"PSQL_CONNECT_ATTEMPTS" envDefault:"3"`
-	ConnectBlocks   bool `env:"PSQL_CONNECT_BLOCKS" envDefault:"false"`
-	CloseTimeout    int  `env:"PSQL_CLOSE_TIMEOUT" envDefault:"10"`
+	ConnectTimeout  int  `env:"PSQL_CONNECT_TIMEOUT" envDefault:""`
+	ConnectWaitTime int  `env:"PSQL_CONNECT_WAIT_TIME" envDefault:""`
+	ConnectAttempts int  `env:"PSQL_CONNECT_ATTEMPTS" envDefault:""`
+	ConnectBlocks   bool `env:"PSQL_CONNECT_BLOCKS" envDefault:""`
+	CloseTimeout    int  `env:"PSQL_CLOSE_TIMEOUT" envDefault:""`
 }

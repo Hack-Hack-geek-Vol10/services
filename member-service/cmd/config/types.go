@@ -8,7 +8,7 @@ type config struct {
 }
 
 type Server struct {
-	ServerAddr string `env:"SERVER_ADDR" envDefault:":8083"`
+	ServerAddr string `env:"SERVER_ADDR" envDefault:"8083"`
 }
 
 type Database struct {

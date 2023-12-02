@@ -5,6 +5,7 @@ on:
     branches:
       - develop
     paths:
+      # ①新しくサービスが増えたらこの部分を追加する
       - 'user-service/api/**'
       - 'image-service/api/**'
       - 'image-service/api/**'
@@ -33,26 +34,28 @@ jobs:
           echo "::set-output name=DIFF_RESULT::$DIFF_RESULT"
       
       # 変更があった場合にのみ実行されるファイルコピー
+      # ①新しくサービスが増えたらこの部分を追加する
       - name: if user-service/api changed then copy generated file to $HOME/user-service
-        if: ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep user-service/api
+        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep user-service/api}
+          
         run: |
           mkdir -p $HOME/user-service
           cp -r user-service/api/* $HOME/user-service
 
       - name: if project-service/api changed then copy generated file to $HOME/project-service
-        if: ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep project-service/api
+        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep project-service/api}
         run: |
           mkdir -p $HOME/project-service
           cp -r project-service/api/* $HOME/project-service
       
       - name: if image-service/api changed then copy generated file to $HOME/image-service
-        if: ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep image-service/api
+        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep image-service/api}
         run: |
             mkdir -p $HOME/image-service
             cp -r image-service/api/* $HOME/image-service
 
       - name: if member-service/api changed then copy generated file to $HOME/member-service
-        if: ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep member-service/api
+        if: ${-n ${{ steps.collect-diff.outputs.DIFF_RESULT }} | grep member-service/api}
         run: |
             mkdir -p $HOME/member-service
             cp -r member-service/api/* $HOME/member-service
