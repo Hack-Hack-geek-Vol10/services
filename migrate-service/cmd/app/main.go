@@ -10,6 +10,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	dbconn "github.com/murasame29/db-conn/sqldb/postgres"
 	"github.com/schema-creator/services/migrate-service/cmd/config"
+	"github.com/schema-creator/services/migrate-service/src/server"
 )
 
 func init() {
@@ -67,4 +68,6 @@ func main() {
 		}
 		c.JSON(200, "success migrate")
 	})
+
+	server.Run(router)
 }
