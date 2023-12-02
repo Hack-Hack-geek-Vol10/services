@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    # paths:
-    #   - "token-service/**"
+    paths:
+      - "token-service/**"
 
 permissions:
   actions: write
