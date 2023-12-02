@@ -20,14 +20,14 @@ func NewTokenService(tokenRepo infra.TokenRepo) token.TokenServiceServer {
 	}
 }
 
-func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateProjectRequest) {
+func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRequest) (*token.CreateTokenResponse, error) {
 	param := domain.CreateTokenParam{
 		TokenID:   uuid.New().String(),
 		ProjectID: arg.ProjectId,
-		Authority: arg.Authority,
+		Authority: int(arg.Authority),
 	}
 
-	_, err := t.tokenRepo.Create(ctx, param)
+	err := t.tokenRepo.Create(ctx, param)
 	if err != nil {
 		return nil, err
 	}
@@ -38,12 +38,31 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateProject
 }
 
 func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest) (*token.GetTokenResponse, error) {
-	tokenInfo, err := t.tokenRepo.ReadOne(ctx, arg.Token)
+	param := domain.GetTokenParam{
+		TokenID: arg.Token,
+	}
+	tokenInfo, err := t.tokenRepo.Get(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
 	return &token.GetTokenResponse{
-		Token: tokenInfo.TokenID,
+		TokenId:   tokenInfo.TokenID,
+		ProjectId: tokenInfo.ProjectID,
+		Authority: int32(tokenInfo.Authority),
+	}, nil
+}
+
+func (t *tokenService) DeleteToken(ctx context.Context, arg *token.DeleteTokenRequest) (*token.DeleteTokenResponse, error) {
+	param := domain.DeleteTokenParam{
+		ProjectID: arg.ProjectId,
+	}
+	err := t.tokenRepo.Delete(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	return &token.DeleteTokenResponse{
+		ProjectId: arg.ProjectId,
 	}, nil
 }
