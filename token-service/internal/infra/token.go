@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/google/uuid"
 	"github.com/schema-creator/services/token-service/internal/domain"
 )
 
@@ -23,10 +22,9 @@ func NewTokenRepo(db *sql.DB) TokenRepo {
 }
 
 func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
-	const query = `INSERT INTO tokens (token_id, project_id, authority) VALUES ($1,$2,$3)` // <- ここに返すカラムを書く
-	uuid := uuid.New().String()                                                            // <- string型のuuidを生成したほうがいいかも uuid.New().String()
+	const query = `INSERT INTO tokens (token_id, project_id, authority) VALUES ($1,$2,$3)`
 
-	row := t.db.QueryRowContext(ctx, query, uuid, arg.ProjectID, arg.Authority)
+	row := t.db.QueryRowContext(ctx, query, arg.TokenID, arg.ProjectID, arg.Authority)
 
 	return row.Err()
 }
