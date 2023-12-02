@@ -48,7 +48,6 @@ jobs:
           ref: develop
       
       - name: Create a branch when it doesn't exist
-        if: steps.diff.outputs.diff == 'true'
         run: |
           branch_is_existing=$(
             git fetch origin ft/wfc-bff &&
@@ -64,20 +63,18 @@ jobs:
       
       # $HOMEにコピーしたファイルをコミットする
       - name: copy file to gateways
-        if: steps.diff.outputs.diff == 'true'
+       
         run: |
           git switch -c ft/copy-file/${{github.sha}}
           cp -r $HOME/*-service/* pkg/grpc/
       
       - name: commit and push changes
-        if: steps.diff.outputs.diff == 'true'
         run: |
           git add .
           git commit -m "feat: copy grpc to graph-gateway"
           git push origin ft/copy-file/${{github.sha}}
       
       - name: create Pull Request to frontend
-        if: steps.diff.outputs.diff == 'true'
         run: |
           gh pr create \
             --title ":robot: copy grpc [bot]" \
