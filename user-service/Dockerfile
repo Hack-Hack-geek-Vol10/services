@@ -6,7 +6,7 @@ COPY . .
 
 RUN go build -o user-service ./cmd/app/main.go
 
-FROM alpine:3.14.2 AS runner
+FROM alpine:3.14 AS runner
 WORKDIR /app/user-service
 COPY --from=builder /app/user-service/user-service /app/user-service/user-service
 
