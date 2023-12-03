@@ -29,7 +29,7 @@ jobs:
     - name: Build
       run: |
         cd migrate-service
-        docker build -t ${{ secrets.HARBOR_REGISTRY }}/migrate-${{ github.repository }}:${{ github.sha }} .
+        docker build -t ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}-migrate .
 
     - name: login to harbor registry
       uses: docker/login-action@v1
@@ -40,7 +40,7 @@ jobs:
 
     - name: push to harbor registry
       run: |
-        docker push ${{ secrets.HARBOR_REGISTRY }}/migrate-${{ github.repository }}:${{ github.sha }}
+        docker push ${{ secrets.HARBOR_REGISTRY }}/migrate-${{ github.repository }}:${{ github.sha }}-migrate
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
       - name: Change manifest
         run: |
           cd backend/stage
-          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/migrate-${{ github.repository }}:${{ github.sha }}"' 'migrate-service.yaml'
+          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/migrate-${{ github.repository }}:${{ github.sha }}-migrate"' 'migrate-service.yaml'
       
       - name: push repository
         run: |
