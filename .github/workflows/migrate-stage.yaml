@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - "migrate-service/**"
+    # paths:
+    #   - "migrate-service/**"
 
 permissions:
   actions: write
