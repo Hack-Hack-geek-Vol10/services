@@ -9,17 +9,17 @@ import (
 )
 
 type memberService struct {
-	member.UnimplementedMemberServiceServer
+	member.UnimplementedMemberServer
 	memberRepo infra.MemberRepo
 }
 
-func NewMemberService(memberRepo infra.MemberRepo) member.MemberServiceServer {
+func NewMemberService(memberRepo infra.MemberRepo) member.MemberServer {
 	return &memberService{
 		memberRepo: memberRepo,
 	}
 }
 
-func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest) (*member.Member, error) {
+func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
 	result, err := m.memberRepo.Create(ctx, domain.CreateMemberParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
@@ -29,7 +29,7 @@ func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest)
 	if err != nil {
 		return nil, err
 	}
-	return &member.Member{
+	return &member.MemberResponse{
 		ProjectId: result.ProjectID,
 		UserId:    result.UserID,
 		Authority: member.Auth(member.Auth_value[string(result.Authority)]),
@@ -44,16 +44,16 @@ func (m *memberService) ReadMembers(ctx context.Context, in *member.GetMembersRe
 
 	var listMembers member.ListMembers
 	for _, m := range members {
-		listMembers.Members = append(listMembers.Members, &member.Member{
+		listMembers.Members = append(listMembers.Members, &member.MemberRequest{
 			ProjectId: m.ProjectID,
 			UserId:    m.UserID,
-			Authority: member.Auth(member.Auth_value[string(m.Authority)]),
+			Authority: string(m.Authority),
 		})
 	}
 
 	return &listMembers, nil
 }
-func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRequest) (*member.Member, error) {
+func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
 	result, err := m.memberRepo.UpdateAuthority(ctx, domain.UpdateAuthorityParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
@@ -63,7 +63,7 @@ func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRe
 		return nil, err
 	}
 
-	return &member.Member{
+	return &member.MemberResponse{
 		ProjectId: result.ProjectID,
 		UserId:    result.UserID,
 		Authority: member.Auth(member.Auth_value[string(result.Authority)]),

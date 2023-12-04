@@ -4,10 +4,10 @@ option go_package = "api/member-service/v1";
 
 package member.v1;
 
-service MemberService {
-    rpc CreateMember(MemberRequest) returns (Member);
+service Member {
+    rpc CreateMember(MemberRequest) returns (MemberResponse);
     rpc GetMembers(GetMembersRequest) returns (ListMembers);
-    rpc UpdateAuthority(MemberRequest) returns (Member);
+    rpc UpdateAuthority(MemberRequest) returns (MemberResponse);
     rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberResponse);
 }
 
@@ -17,7 +17,7 @@ message MemberRequest {
     string authority = 3;
 }
 
-message Member {
+message MemberResponse {
     string user_id = 1;
     string project_id = 2;
     auth authority = 3;
@@ -28,7 +28,7 @@ message GetMembersRequest {
 }
 
 message ListMembers {
-    repeated Member members = 1;
+    repeated MemberRequest members = 1;
 }
 
 message DeleteMemberRequest {

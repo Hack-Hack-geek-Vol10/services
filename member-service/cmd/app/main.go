@@ -50,7 +50,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	member.RegisterMemberServiceServer(s, usecase.NewMemberService(infra.NewMemberRepo(db)))
+	member.RegisterMemberServer(s, usecase.NewMemberService(infra.NewMemberRepo(db)))
 
 	reflection.Register(s)
 
