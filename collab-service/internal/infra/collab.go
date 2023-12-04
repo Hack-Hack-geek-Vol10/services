@@ -21,20 +21,17 @@ func NewCollabRepo(db *sql.DB) CollabRepo {
 	return &collabRepo{db: db}
 }
 
+func (c *collabRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
+	const query = `INSERT INTO editor (project_id, text) VALUES ($1,$2)`
 
-func (c *collabRepo)
-
-func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
-	const query = `INSERT INTO tokens (token_id, project_id, authority) VALUES ($1,$2,$3)`
-
-	row := t.db.QueryRowContext(ctx, query, arg.TokenID, arg.ProjectID, arg.Authority)
+	row := c.db.QueryRowContext(ctx, query, arg.TokenID, arg.ProjectID, arg.Authority)
 
 	return row.Err()
 }
 
-func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
+func (c *collabRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
 	const query = `SELECT token_id,project_id,authority FROM tokens WHERE token_id = $1`
-	row := t.db.QueryRowContext(ctx, query, arg.TokenID)
+	row := c.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
 	if err := row.Scan(&token.TokenID, &token.ProjectID, &token.Authority); err != nil {
 		return nil, err
@@ -42,9 +39,9 @@ func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.
 	return &token, nil
 }
 
-func (t *tokenRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
+func (c *collabRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
 	const query = `DELETE FROM tokens WHERE project_id = $1`
-	row, err := t.db.ExecContext(ctx, query, arg.ProjectID)
+	row, err := c.db.ExecContext(ctx, query, arg.ProjectID)
 	if err != nil {
 		return err
 	}
