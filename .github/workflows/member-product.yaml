@@ -1,5 +1,4 @@
-name: build and deployment
-
+name: deployment <member-service>
 on:
   push:
     branches:

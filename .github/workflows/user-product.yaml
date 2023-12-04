@@ -1,4 +1,4 @@
-name: build and deployment
+name: deployment <user-service>
 
 on:
   push:

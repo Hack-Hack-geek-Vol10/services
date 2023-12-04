@@ -1,4 +1,4 @@
-name: build and deployment
+name: build and deployment <token-service>
 
 on:
   push:
