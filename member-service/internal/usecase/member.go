@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 
 	member "github.com/schema-creator/services/member-service/api/v1"
 	"github.com/schema-creator/services/member-service/internal/domain"
@@ -27,6 +28,7 @@ func (m *memberService) CreateMember(ctx context.Context, in *member.MemberReque
 	})
 
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	return &member.MemberResponse{
@@ -39,6 +41,7 @@ func (m *memberService) CreateMember(ctx context.Context, in *member.MemberReque
 func (m *memberService) GetMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
 	members, err := m.memberRepo.ReadAll(ctx, in.ProjectId)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -60,6 +63,7 @@ func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRe
 		Authority: domain.Authority(in.Authority),
 	})
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -75,6 +79,7 @@ func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMembe
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
 	}); err != nil {
+		log.Println(err)
 		return nil, err
 	}
 

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 
 	"github.com/google/uuid"
 	project "github.com/schema-creator/services/project-service/api/v1"
@@ -32,6 +33,7 @@ func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateP
 
 	result, err := s.projectRepo.Create(ctx, param)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -46,6 +48,7 @@ func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateP
 func (s *projectService) GetProject(ctx context.Context, arg *project.GetProjectRequest) (*project.ProjectDetails, error) {
 	projectInfo, err := s.projectRepo.ReadOne(ctx, arg.ProjectId)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -73,6 +76,7 @@ func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProj
 	})
 
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -94,6 +98,7 @@ func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProj
 func (s *projectService) UpdateTitle(ctx context.Context, arg *project.UpdateTitleRequest) (*project.ProjectDetails, error) {
 	projectInfo, err := s.projectRepo.UpdateTitle(ctx, arg.ProjectId, arg.Title)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -108,6 +113,7 @@ func (s *projectService) UpdateTitle(ctx context.Context, arg *project.UpdateTit
 func (s *projectService) UpdateImage(ctx context.Context, arg *project.UpdateImageRequest) (*project.ProjectDetails, error) {
 	projectInfo, err := s.projectRepo.UpdateLastImage(ctx, arg.ProjectId, arg.LastImage)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -122,6 +128,7 @@ func (s *projectService) UpdateImage(ctx context.Context, arg *project.UpdateIma
 func (s *projectService) DeleteProject(ctx context.Context, arg *project.DeleteProjectRequest) (*project.DeleteProjectResponse, error) {
 	err := s.projectRepo.Delete(ctx, arg.ProjectId)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 

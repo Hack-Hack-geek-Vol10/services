@@ -47,7 +47,7 @@ func (r *projectRepo) ReadOne(ctx context.Context, projectID string) (*domain.Pr
 
 func (r *projectRepo) ReadAll(ctx context.Context, arg domain.ReadProjectsParam) ([]*domain.Project, error) {
 	const query = `SELECT project_id,title,last_image FROM projects WHERE project_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`
-	rows, err := r.db.QueryContext(ctx, query, arg.UserID)
+	rows, err := r.db.QueryContext(ctx, query, arg.UserID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 
 	"github.com/google/uuid"
 	token "github.com/schema-creator/services/token-service/api/v1"
@@ -29,6 +30,7 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRe
 
 	err := t.tokenRepo.Create(ctx, param)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -43,6 +45,7 @@ func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest)
 	}
 	tokenInfo, err := t.tokenRepo.Get(ctx, param)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -59,6 +62,7 @@ func (t *tokenService) DeleteToken(ctx context.Context, arg *token.DeleteTokenRe
 	}
 	err := t.tokenRepo.Delete(ctx, param)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 

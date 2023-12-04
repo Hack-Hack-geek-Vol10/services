@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 
 	user "github.com/schema-creator/services/user-service/api/v1"
 	"github.com/schema-creator/services/user-service/internal/domain"
@@ -26,6 +27,7 @@ func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams
 		Email:  arg.Email,
 	})
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -39,6 +41,7 @@ func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams
 func (s *userService) GetUser(ctx context.Context, arg *user.GetUserParams) (*user.UserDetail, error) {
 	userInfo, err := s.userRepo.ReadOne(ctx, arg.UserId)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
