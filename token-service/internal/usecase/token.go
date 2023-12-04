@@ -10,11 +10,11 @@ import (
 )
 
 type tokenService struct {
-	token.UnimplementedTokenServiceServer
+	token.UnimplementedTokenServer
 	tokenRepo infra.TokenRepo
 }
 
-func NewTokenService(tokenRepo infra.TokenRepo) token.TokenServiceServer {
+func NewTokenService(tokenRepo infra.TokenRepo) token.TokenServer {
 	return &tokenService{
 		tokenRepo: tokenRepo,
 	}
