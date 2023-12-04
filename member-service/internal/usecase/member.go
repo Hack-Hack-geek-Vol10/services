@@ -19,7 +19,7 @@ func NewMemberService(memberRepo infra.MemberRepo) member.MemberServer {
 	}
 }
 
-func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
+func (m *memberService) CreateMember(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
 	result, err := m.memberRepo.Create(ctx, domain.CreateMemberParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
@@ -36,7 +36,7 @@ func (m *memberService) AddMember(ctx context.Context, in *member.MemberRequest)
 	}, nil
 }
 
-func (m *memberService) ReadMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
+func (m *memberService) GetMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
 	members, err := m.memberRepo.ReadAll(ctx, in.ProjectId)
 	if err != nil {
 		return nil, err
