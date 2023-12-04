@@ -28,7 +28,7 @@ message GetMembersRequest {
 }
 
 message ListMembers {
-    repeated MemberRequest members = 1;
+    repeated MemberResponse members = 1;
 }
 
 message DeleteMemberRequest {

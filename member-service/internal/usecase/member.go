@@ -44,10 +44,10 @@ func (m *memberService) ReadMembers(ctx context.Context, in *member.GetMembersRe
 
 	var listMembers member.ListMembers
 	for _, m := range members {
-		listMembers.Members = append(listMembers.Members, &member.MemberRequest{
+		listMembers.Members = append(listMembers.Members, &member.MemberResponse{
 			ProjectId: m.ProjectID,
 			UserId:    m.UserID,
-			Authority: string(m.Authority),
+			Authority: member.Auth(member.Auth_value[string(m.Authority)]),
 		})
 	}
 
