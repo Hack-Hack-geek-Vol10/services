@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	image "github.com/schema-creator/services/image-service/api/v1"
@@ -58,6 +59,7 @@ func (i *imageService) UploadImage(ctx context.Context, arg *image.UploadImageRe
 	})
 
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -74,6 +76,7 @@ func (i *imageService) DeleteImage(ctx context.Context, arg *image.DeleteImageRe
 
 	err := i.imageRepo.DeleteImage(ctx, arg.Key)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
