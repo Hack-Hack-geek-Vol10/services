@@ -30,7 +30,7 @@ func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) err
 }
 
 func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
-	const query = `SELECT token_id,project_id,authority FROM tokens WHERE token_id = $1`
+	const query = `SELECT token_id, project_id, authority FROM tokens WHERE token_id = $1`
 	row := t.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
 	if err := row.Scan(&token.TokenID, &token.ProjectID, &token.Authority); err != nil {
