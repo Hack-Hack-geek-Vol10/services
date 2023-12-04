@@ -4,7 +4,7 @@ option go_package = "api/project-service/v1";
 
 package project.v1;
 
-service ProjectService {
+service Project {
   rpc CreateProject(CreateProjectRequest) returns (ProjectDetails);
   rpc GetProject(GetProjectRequest) returns (ProjectDetails);
   rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);

@@ -10,11 +10,11 @@ import (
 )
 
 type projectService struct {
-	project.UnimplementedProjectServiceServer
+	project.UnimplementedProjectServer
 	projectRepo infra.ProjectRepo
 }
 
-func NewProjectService(projectRepo infra.ProjectRepo) project.ProjectServiceServer {
+func NewProjectService(projectRepo infra.ProjectRepo) project.ProjectServer {
 	return &projectService{
 		projectRepo: projectRepo,
 	}
