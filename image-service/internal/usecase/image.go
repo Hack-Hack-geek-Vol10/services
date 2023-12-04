@@ -21,11 +21,11 @@ const (
 )
 
 type imageService struct {
-	image.UnimplementedImageServiceServer
+	image.UnimplementedImageServer
 	imageRepo infra.ImageRepo
 }
 
-func NewImageService(imageRepo infra.ImageRepo) image.ImageServiceServer {
+func NewImageService(imageRepo infra.ImageRepo) image.ImageServer {
 	return &imageService{
 		imageRepo: imageRepo,
 	}

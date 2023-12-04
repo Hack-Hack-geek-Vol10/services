@@ -37,7 +37,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	image.RegisterImageServiceServer(s, usecase.NewImageService(infra.NewImageRepo(app)))
+	image.RegisterImageServer(s, usecase.NewImageService(infra.NewImageRepo(app)))
 
 	reflection.Register(s)
 

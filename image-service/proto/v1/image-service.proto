@@ -4,7 +4,7 @@ option go_package = "api/image-service/v1";
 
 package image_service.v1;
 
-service ImageService {
+service Image {
   rpc UploadImage(UploadImageRequest) returns (UploadImageResponse);
   rpc DeleteImage(DeleteImageRequest) returns (DeleteImageResponse);
 }
