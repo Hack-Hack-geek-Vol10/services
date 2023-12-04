@@ -9,11 +9,11 @@ import (
 )
 
 type userService struct {
-	user.UnimplementedUserServiceServer
+	user.UnimplementedUserServer
 	userRepo infra.UserRepo
 }
 
-func NewUserService(userRepo infra.UserRepo) user.UserServiceServer {
+func NewUserService(userRepo infra.UserRepo) user.UserServer {
 	return &userService{
 		userRepo: userRepo,
 	}
