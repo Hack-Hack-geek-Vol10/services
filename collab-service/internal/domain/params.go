@@ -1,15 +1,19 @@
 package domain
 
-type CreateTokenParam struct {
-	TokenID   string    `json:"token_id"`
-	ProjectID string    `json:"project_id"`
-	Authority Authority `json:"authority"`
+type CreateEditorParam struct {
+	ProjectID string `json:"project_id"`
+	Query     string `json:"query"`
 }
 
-type GetTokenParam struct {
-	TokenID string `json:"token_id"`
+type GetEditorParam struct {
+	ProjectID string `json:"project_id"`
 }
 
-type DeleteTokenParam struct {
+type UpdateEditorParam struct {
+	ProjectID string `json:"project_id"`
+	Query     string `json:"query"`
+}
+
+type DeleteEditorParam struct {
 	ProjectID string `json:"project_id"`
 }

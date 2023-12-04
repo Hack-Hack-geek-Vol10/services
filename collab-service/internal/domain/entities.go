@@ -1,16 +1,9 @@
 package domain
 
-type Token struct {
-	TokenID   string    `json:"token_id"`
-	ProjectID string    `json:"project_id"`
-	Token     string    `json:"token"`
-	Authority Authority `json:"authority"`
+// import
+
+type Editor struct {
+	EditorID  string
+	ProjectID string
+	Query     string
 }
-
-type Authority string
-
-const (
-	AuthorityOwner Authority = "owner"
-	ReadAndWrite   Authority = "read_and_write"
-	ReadOnly       Authority = "read_only"
-)

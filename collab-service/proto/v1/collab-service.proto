@@ -11,9 +11,10 @@ package token.v1;
 //  ↑　　　↑　　　　　　↑　　　　　　　　　　　　　↑
 // 呪い　メソッド名　　リクエスト型　　　　　レスポンス型
 service TokenService {
-  rpc CreateToken (CreateTokenRequest) returns (CreateTokenResponse);
-  rpc GetToken (GetTokenRequest) returns (GetTokenResponse);
-  rpc DeleteToken (DeleteTokenRequest) returns (DeleteTokenResponse);
+  rpc CreateEditor (CreateEditorRequest) returns (CreateEditorResponse);
+  rpc GetEditor (GetEditorRequest) returns (GetEditorResponse);
+  rpc UpdateEditor (UpdateEditorRequest) returns (UpdateEditorResponse);
+  rpc DeleteEditor (DeleteEditorRequest) returns (DeleteEditorResponse);
 }
 
 // リクエスト, レスポンスの型を定義する
@@ -23,31 +24,36 @@ service TokenService {
 // 　↓   　　　　↓　　　
 // https://qiita.com/yukina-ge/items/98fe190cef2024d45fbd
 
-
-
-message CreateTokenRequest {
+message CreateEditorRequest {
   string project_id = 1;
-  string authority = 2;
+  string text = 2;
 }
 
-message CreateTokenResponse {
-  string token = 1;
+message CreateEditorResponse {
+  string text= 1;
 }
 
-message GetTokenRequest {
-  string token = 1;
-}
-
-message GetTokenResponse {
-  string token_id = 1;
-  string project_id = 2;
-  string authority = 3;
-}
-
-message DeleteTokenRequest {
+message GetEditorRequest {
   string project_id = 1;
 }
 
-message DeleteTokenResponse {
+message GetEditorResponse {
+  string project_id = 1;
+}
+
+message UpdateEditorRequest {
+  string project_id = 1;
+  string text = 2;
+}
+
+message UpdateEditorResponse {
+  string project_id = 1;
+}
+
+message DeleteEditorRequest {
+  string project_id = 1;
+}
+
+message DeleteEditorResponse {
   string project_id = 1;
 }

@@ -7,19 +7,22 @@ import (
 	"github.com/schema-creator/services/collab-service/internal/domain"
 )
 
-type tokenRepo struct {
+type collabRepo struct {
 	db *sql.DB
 }
 
-type TokenRepo interface {
+type CollabRepo interface {
 	Create(ctx context.Context, arg domain.CreateTokenParam) error
 	Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error)
 	Delete(ctx context.Context, arg domain.DeleteTokenParam) error
 }
 
-func NewTokenRepo(db *sql.DB) TokenRepo {
-	return &tokenRepo{db: db}
+func NewCollabRepo(db *sql.DB) CollabRepo {
+	return &collabRepo{db: db}
 }
+
+
+func (c *collabRepo)
 
 func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
 	const query = `INSERT INTO tokens (token_id, project_id, authority) VALUES ($1,$2,$3)`
