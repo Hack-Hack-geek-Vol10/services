@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    paths:
-      - "save-service/**"
+    # paths:
+    #   - "save-service/**"
 
 permissions:
   actions: write
@@ -29,7 +29,7 @@ jobs:
     - name: build
       run: |
         cd save-service
-        docker build -t ${{ secrets.HARBOR_REGISTRY }}/project${{ github.repository }}:${{ github.sha }} .
+        docker build -t ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}-save .
 
     - name: login to harbor registry
       uses: docker/login-action@v1
@@ -40,7 +40,7 @@ jobs:
 
     - name: push to harbor registry
       run: |
-        docker push ${{ secrets.HARBOR_REGISTRY }}/project${{ github.repository }}:${{ github.sha }}
+        docker push ${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}-save
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
       - name: Change manifest
         run: |
           cd backend/stage
-          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/project${{ github.repository }}:${{ github.sha }}"' 'save-service.yaml'
+          yq -i '.spec.template.spec.containers[0].image = "${{ secrets.HARBOR_REGISTRY }}/${{ github.repository }}:${{ github.sha }}-save"' 'save-service.yaml'
       
       - name: push repository
         run: |
