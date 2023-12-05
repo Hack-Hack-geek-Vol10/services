@@ -7,4 +7,5 @@ use (
   ./project-service
   ./token-service
   ./user-service
+  ./scml
 )
