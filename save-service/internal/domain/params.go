@@ -1,19 +1,15 @@
 package domain
 
-type CreateEditorParam struct {
+type CreateSaveParam struct {
 	ProjectID string `json:"project_id"`
-	Query     string `json:"query"`
+	Editor    string `json:"editor"`
+	Object    string `json:"object"`
 }
 
-type GetEditorParam struct {
+type GetSaveParam struct {
 	ProjectID string `json:"project_id"`
 }
 
-type UpdateEditorParam struct {
-	ProjectID string `json:"project_id"`
-	Query     string `json:"query"`
-}
-
-type DeleteEditorParam struct {
+type DeleteSaveParam struct {
 	ProjectID string `json:"project_id"`
 }

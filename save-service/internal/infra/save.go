@@ -7,31 +7,30 @@ import (
 	"github.com/schema-creator/services/save-service/internal/domain"
 )
 
-type collabRepo struct {
+type saveRepo struct {
 	db *sql.DB
 }
 
-type CollabRepo interface {
-	Create(ctx context.Context, arg domain.CreateEditorParam) error
+type SaveRepo interface {
+	Create(ctx context.Context, arg domain.CreateSaveParam) error
 	Get(ctx context.Context, arg domain.GetEditorParam) (*domain.Token, error)
 	Delete(ctx context.Context, arg domain.DeleteEditorParam) error
 }
 
-func NewCollabRepo(db *sql.DB) CollabRepo {
-	return &collabRepo{db: db}
+func NewSaveRepo(db *sql.DB) SaveRepo {
+	return &saveRepo{db: db}
 }
 
-func (c *collabRepo) Create(ctx context.Context, arg domain.CreateEditorParam) error {
-	const query = `INSERT INTO editor (project_id, Query) VALUES ($1,$2)`
-
-	row := c.db.QueryRowContext(ctx, query, arg.ProjectID, arg.Query)
+func (s *saveRepo) Create(ctx context.Context, arg domain.CreateSaveParam) error {
+	const query = `INSERT INTO saves (save_id, project_id, editor, object) VALUES ($1,$2,$3,$4)`
+	row := s.db.QueryRowContext(ctx, query, arg.SaveID, arg.ProjectID, arg.Editor, arg.Object)
 
 	return row.Err()
 }
 
-func (c *collabRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
+func (s *saveRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
 	const query = `SELECT project_id, FROM tokens WHERE token_id = $1`
-	row := c.db.QueryRowContext(ctx, query, arg.TokenID)
+	row := s.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
 	if err := row.Scan(&token.TokenID, &token.ProjectID, &token.Authority); err != nil {
 		return nil, err
@@ -39,9 +38,9 @@ func (c *collabRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain
 	return &token, nil
 }
 
-func (c *collabRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
+func (s *saveRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
 	const query = `DELETE FROM tokens WHERE project_id = $1`
-	row, err := c.db.ExecContext(ctx, query, arg.ProjectID)
+	row, err := s.db.ExecContext(ctx, query, arg.ProjectID)
 	if err != nil {
 		return err
 	}

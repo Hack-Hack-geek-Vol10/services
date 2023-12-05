@@ -4,65 +4,61 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	token "github.com/schema-creator/services/save-service/api/v1"
+	save "github.com/schema-creator/services/save-service/api/v1"
 	"github.com/schema-creator/services/save-service/internal/domain"
 	"github.com/schema-creator/services/save-service/internal/infra"
 )
 
-type tokenService struct {
-	token.UnimplementedTokenServiceServer
-	tokenRepo infra.TokenRepo
+type saveService struct {
+	save.UnimplementedSaveServiceServer
+	saveRepo infra.SaveRepo
 }
 
-func NewTokenService(tokenRepo infra.TokenRepo) token.TokenServiceServer {
-	return &tokenService{
-		tokenRepo: tokenRepo,
+func NewSaveService(saveRepo infra.SaveRepo) save.SaveServiceServer {
+	return &saveService{
+		saveRepo: saveRepo,
 	}
 }
 
-func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRequest) (*token.CreateTokenResponse, error) {
-	param := domain.CreateTokenParam{
-		TokenID:   uuid.New().String(),
-		ProjectID: arg.ProjectId,
-		Authority: domain.Authority(arg.Authority),
+func (t *saveService) CreateSave(ctx context.Context, arg *save.CreateSaveRequest) (*save.CreateSaveResponse, error) {
+	param := domain.CreateSaveParam{
+		SaveID: uuid.New().String(),
 	}
 
-	err := t.tokenRepo.Create(ctx, param)
+	err := t.saveRepo.Create(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &token.CreateTokenResponse{
-		Token: param.TokenID,
+	return &save.CreateSaveResponse{
+		Save: param.SaveID,
 	}, nil
 }
 
-func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest) (*token.GetTokenResponse, error) {
-	param := domain.GetTokenParam{
-		TokenID: arg.Token,
+func (t *saveService) GetSave(ctx context.Context, arg *save.GetSaveRequest) (*save.GetSaveResponse, error) {
+	param := domain.GetSaveParam{
+		SaveID: arg.Save,
 	}
-	tokenInfo, err := t.tokenRepo.Get(ctx, param)
+	saveInfo, err := t.saveRepo.Get(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &token.GetTokenResponse{
-		TokenId:   tokenInfo.TokenID,
-		ProjectId: tokenInfo.ProjectID,
-		Authority: string(tokenInfo.Authority),
+	return &save.GetSaveResponse{
+		SaveId: saveInfo.SaveID,
 	}, nil
 }
 
-func (t *tokenService) DeleteToken(ctx context.Context, arg *token.DeleteTokenRequest) (*token.DeleteTokenResponse, error) {
-	param := domain.DeleteTokenParam{
+func (t *saveService) DeleteSave(ctx context.Context, arg *save.DeleteSaveRequest) (*save.DeleteSaveResponse, error) {
+	param := domain.DeleteSaveParam{
 		ProjectID: arg.ProjectId,
 	}
-	err := t.tokenRepo.Delete(ctx, param)
+	err := t.saveRepo.Delete(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &token.DeleteTokenResponse{
+	return &save.DeleteSaveResponse{
 		ProjectId: arg.ProjectId,
 	}, nil
 }
