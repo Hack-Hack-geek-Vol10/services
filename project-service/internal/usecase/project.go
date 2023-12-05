@@ -62,7 +62,7 @@ func (s *projectService) GetProject(ctx context.Context, arg *project.GetProject
 
 func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProjectsRequest) (*project.ListProjectsResponse, error) {
 	if arg.Limit == 0 {
-		arg.Limit = 10
+		arg.Limit = 1000
 	}
 
 	if arg.Offset == 0 {
