@@ -11,9 +11,9 @@ package save.v1;
 //  ↑　　　↑　　　　　　↑　　　　　　　　　　　　　↑
 // 呪い　メソッド名　　リクエスト型　　　　　レスポンス型
 service SaveService {
-  rpc CreateEditor (CreateSaveRequest) returns (CreateSaveResponse);
-  rpc GetEditor (GetSaveRequest) returns (GetSaveResponse);
-  rpc DeleteEditor (DeleteSaveRequest) returns (DeleteSaveResponse);
+  rpc CreateSave (CreateSaveRequest) returns (CreateSaveResponse);
+  rpc GetSave (GetSaveRequest) returns (GetSaveResponse);
+  rpc DeleteSave (DeleteSaveRequest) returns (DeleteSaveResponse);
 }
 
 // リクエスト, レスポンスの型を定義する

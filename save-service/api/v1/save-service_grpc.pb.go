@@ -19,18 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SaveService_CreateEditor_FullMethodName = "/save.v1.SaveService/CreateEditor"
-	SaveService_GetEditor_FullMethodName    = "/save.v1.SaveService/GetEditor"
-	SaveService_DeleteEditor_FullMethodName = "/save.v1.SaveService/DeleteEditor"
+	SaveService_CreateSave_FullMethodName = "/save.v1.SaveService/CreateSave"
+	SaveService_GetSave_FullMethodName    = "/save.v1.SaveService/GetSave"
+	SaveService_DeleteSave_FullMethodName = "/save.v1.SaveService/DeleteSave"
 )
 
 // SaveServiceClient is the client API for SaveService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SaveServiceClient interface {
-	CreateEditor(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error)
-	GetEditor(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error)
-	DeleteEditor(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error)
+	CreateSave(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error)
+	GetSave(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error)
+	DeleteSave(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error)
 }
 
 type saveServiceClient struct {
@@ -41,27 +41,27 @@ func NewSaveServiceClient(cc grpc.ClientConnInterface) SaveServiceClient {
 	return &saveServiceClient{cc}
 }
 
-func (c *saveServiceClient) CreateEditor(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error) {
+func (c *saveServiceClient) CreateSave(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error) {
 	out := new(CreateSaveResponse)
-	err := c.cc.Invoke(ctx, SaveService_CreateEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_CreateSave_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *saveServiceClient) GetEditor(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error) {
+func (c *saveServiceClient) GetSave(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error) {
 	out := new(GetSaveResponse)
-	err := c.cc.Invoke(ctx, SaveService_GetEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_GetSave_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *saveServiceClient) DeleteEditor(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error) {
+func (c *saveServiceClient) DeleteSave(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error) {
 	out := new(DeleteSaveResponse)
-	err := c.cc.Invoke(ctx, SaveService_DeleteEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_DeleteSave_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,9 +72,9 @@ func (c *saveServiceClient) DeleteEditor(ctx context.Context, in *DeleteSaveRequ
 // All implementations must embed UnimplementedSaveServiceServer
 // for forward compatibility
 type SaveServiceServer interface {
-	CreateEditor(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error)
-	GetEditor(context.Context, *GetSaveRequest) (*GetSaveResponse, error)
-	DeleteEditor(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error)
+	CreateSave(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error)
+	GetSave(context.Context, *GetSaveRequest) (*GetSaveResponse, error)
+	DeleteSave(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error)
 	mustEmbedUnimplementedSaveServiceServer()
 }
 
@@ -82,14 +82,14 @@ type SaveServiceServer interface {
 type UnimplementedSaveServiceServer struct {
 }
 
-func (UnimplementedSaveServiceServer) CreateEditor(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateEditor not implemented")
+func (UnimplementedSaveServiceServer) CreateSave(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSave not implemented")
 }
-func (UnimplementedSaveServiceServer) GetEditor(context.Context, *GetSaveRequest) (*GetSaveResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetEditor not implemented")
+func (UnimplementedSaveServiceServer) GetSave(context.Context, *GetSaveRequest) (*GetSaveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSave not implemented")
 }
-func (UnimplementedSaveServiceServer) DeleteEditor(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteEditor not implemented")
+func (UnimplementedSaveServiceServer) DeleteSave(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSave not implemented")
 }
 func (UnimplementedSaveServiceServer) mustEmbedUnimplementedSaveServiceServer() {}
 
@@ -104,56 +104,56 @@ func RegisterSaveServiceServer(s grpc.ServiceRegistrar, srv SaveServiceServer) {
 	s.RegisterService(&SaveService_ServiceDesc, srv)
 }
 
-func _SaveService_CreateEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_CreateSave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SaveServiceServer).CreateEditor(ctx, in)
+		return srv.(SaveServiceServer).CreateSave(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SaveService_CreateEditor_FullMethodName,
+		FullMethod: SaveService_CreateSave_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SaveServiceServer).CreateEditor(ctx, req.(*CreateSaveRequest))
+		return srv.(SaveServiceServer).CreateSave(ctx, req.(*CreateSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SaveService_GetEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_GetSave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SaveServiceServer).GetEditor(ctx, in)
+		return srv.(SaveServiceServer).GetSave(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SaveService_GetEditor_FullMethodName,
+		FullMethod: SaveService_GetSave_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SaveServiceServer).GetEditor(ctx, req.(*GetSaveRequest))
+		return srv.(SaveServiceServer).GetSave(ctx, req.(*GetSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SaveService_DeleteEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_DeleteSave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SaveServiceServer).DeleteEditor(ctx, in)
+		return srv.(SaveServiceServer).DeleteSave(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SaveService_DeleteEditor_FullMethodName,
+		FullMethod: SaveService_DeleteSave_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SaveServiceServer).DeleteEditor(ctx, req.(*DeleteSaveRequest))
+		return srv.(SaveServiceServer).DeleteSave(ctx, req.(*DeleteSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -166,16 +166,16 @@ var SaveService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SaveServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateEditor",
-			Handler:    _SaveService_CreateEditor_Handler,
+			MethodName: "CreateSave",
+			Handler:    _SaveService_CreateSave_Handler,
 		},
 		{
-			MethodName: "GetEditor",
-			Handler:    _SaveService_GetEditor_Handler,
+			MethodName: "GetSave",
+			Handler:    _SaveService_GetSave_Handler,
 		},
 		{
-			MethodName: "DeleteEditor",
-			Handler:    _SaveService_DeleteEditor_Handler,
+			MethodName: "DeleteSave",
+			Handler:    _SaveService_DeleteSave_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
