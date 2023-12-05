@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	token "github.com/schema-creator/services/collab-service/api/v1"
-	"github.com/schema-creator/services/collab-service/internal/domain"
-	"github.com/schema-creator/services/collab-service/internal/infra"
+	token "github.com/schema-creator/services/save-service/api/v1"
+	"github.com/schema-creator/services/save-service/internal/domain"
+	"github.com/schema-creator/services/save-service/internal/infra"
 )
 
 type tokenService struct {

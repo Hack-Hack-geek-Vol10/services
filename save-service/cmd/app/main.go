@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/murasame29/db-conn/sqldb/postgres"
-	token "github.com/schema-creator/services/collab-service/api/v1"
-	"github.com/schema-creator/services/collab-service/cmd/config"
-	"github.com/schema-creator/services/collab-service/internal/infra"
-	"github.com/schema-creator/services/collab-service/internal/usecase"
+	token "github.com/schema-creator/services/save-service/api/v1"
+	"github.com/schema-creator/services/save-service/cmd/config"
+	"github.com/schema-creator/services/save-service/internal/infra"
+	"github.com/schema-creator/services/save-service/internal/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

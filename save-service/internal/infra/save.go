@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/schema-creator/services/collab-service/internal/domain"
+	"github.com/schema-creator/services/save-service/internal/domain"
 )
 
 type collabRepo struct {

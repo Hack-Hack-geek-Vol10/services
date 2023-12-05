@@ -1,4 +1,4 @@
-module github.com/schema-creator/services/collab-service
+module github.com/schema-creator/services/save-service
 
 go 1.21.4
 
