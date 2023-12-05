@@ -5,10 +5,11 @@ option go_package = "api/member-service/v1";
 package member.v1;
 
 service Member {
-    rpc CreateMember(MemberRequest) returns (MemberResponse);
-    rpc GetMembers(GetMembersRequest) returns (ListMembers);
-    rpc UpdateAuthority(MemberRequest) returns (MemberResponse);
-    rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberResponse);
+  rpc CreateMember(MemberRequest) returns (MemberResponse);
+  rpc GetMembers(GetMembersRequest) returns (ListMembers);
+  rpc UpdateAuthority(MemberRequest) returns (MemberResponse);
+  rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberResponse);
+  rpc DeleteAllMembers (DeleteAllMemberRequest) returns (DeleteMemberResponse);
 }
 
 message MemberRequest {
@@ -45,3 +46,7 @@ enum auth {
     read_write = 1;
     owner = 2;
   }
+
+message DeleteAllMemberRequest {
+    string project_id = 1;
+}

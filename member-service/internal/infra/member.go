@@ -16,6 +16,7 @@ type MemberRepo interface {
 	ReadAll(ctx context.Context, projectID string) ([]*domain.ProjectMember, error)
 	UpdateAuthority(ctx context.Context, arg domain.UpdateAuthorityParam) (*domain.ProjectMember, error)
 	Delete(ctx context.Context, arg domain.DeleteMemberParam) error
+	DeleteAll(ctx context.Context, projectID string) error
 }
 
 func NewMemberRepo(db *sql.DB) MemberRepo {
@@ -64,5 +65,11 @@ func (m *memberRepo) UpdateAuthority(ctx context.Context, arg domain.UpdateAutho
 func (m *memberRepo) Delete(ctx context.Context, arg domain.DeleteMemberParam) error {
 	const query = `DELETE FROM project_members WHERE project_id = $1 AND user_id = $2`
 	row := m.db.QueryRowContext(ctx, query, arg.ProjectID, arg.UserID)
+	return row.Err()
+}
+
+func (m *memberRepo) DeleteAll(ctx context.Context, projectID string) error {
+	const query = `DELETE FROM project_members WHERE project_id = $1`
+	row := m.db.QueryRowContext(ctx, query, projectID)
 	return row.Err()
 }

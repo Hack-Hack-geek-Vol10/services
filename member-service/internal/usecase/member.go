@@ -87,3 +87,18 @@ func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMembe
 		Message: "successful",
 	}, nil
 }
+
+func (m *memberService) DeleteAllMembers(ctx context.Context, in *member.DeleteAllMemberRequest) (*member.DeleteMemberResponse, error) {
+	if err := m.memberRepo.DeleteAll(ctx, in.ProjectId); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &member.DeleteMemberResponse{
+		Message: "successful",
+	}, nil
+}
+
+func (m *memberService) mustEmbedUnimplementedMemberServer() {
+	panic("implement me")
+}
