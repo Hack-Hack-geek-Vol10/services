@@ -24,17 +24,14 @@ service TokenService {
 // 　↓   　　　　↓　　　
 // https://qiita.com/yukina-ge/items/98fe190cef2024d45fbd
 
-message CreateEditorRequest {
+message CreateSaveRequest {
   string project_id = 1;
-  string text = 2;
-}
-
-message CreateEditorResponse {
-  string text= 1;
+  string editor = 2;
+  string object = 3;
 }
 
 message GetEditorRequest {
-  string project_id = 1;
+  string save_id = 1;
 }
 
 message GetEditorResponse {

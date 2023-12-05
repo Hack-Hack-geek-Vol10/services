@@ -12,25 +12,25 @@ type collabRepo struct {
 }
 
 type CollabRepo interface {
-	Create(ctx context.Context, arg domain.CreateTokenParam) error
-	Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error)
-	Delete(ctx context.Context, arg domain.DeleteTokenParam) error
+	Create(ctx context.Context, arg domain.CreateEditorParam) error
+	Get(ctx context.Context, arg domain.GetEditorParam) (*domain.Token, error)
+	Delete(ctx context.Context, arg domain.DeleteEditorParam) error
 }
 
 func NewCollabRepo(db *sql.DB) CollabRepo {
 	return &collabRepo{db: db}
 }
 
-func (c *collabRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
-	const query = `INSERT INTO editor (project_id, text) VALUES ($1,$2)`
+func (c *collabRepo) Create(ctx context.Context, arg domain.CreateEditorParam) error {
+	const query = `INSERT INTO editor (project_id, Query) VALUES ($1,$2)`
 
-	row := c.db.QueryRowContext(ctx, query, arg.TokenID, arg.ProjectID, arg.Authority)
+	row := c.db.QueryRowContext(ctx, query, arg.ProjectID, arg.Query)
 
 	return row.Err()
 }
 
 func (c *collabRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
-	const query = `SELECT token_id,project_id,authority FROM tokens WHERE token_id = $1`
+	const query = `SELECT project_id, FROM tokens WHERE token_id = $1`
 	row := c.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
 	if err := row.Scan(&token.TokenID, &token.ProjectID, &token.Authority); err != nil {
