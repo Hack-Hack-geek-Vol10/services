@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - develop
-    # paths:
-    #   - "save-service/**"
+    paths:
+      - "save-service/**"
 
 permissions:
   actions: write
