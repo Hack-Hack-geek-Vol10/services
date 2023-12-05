@@ -19,163 +19,163 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TokenService_CreateEditor_FullMethodName = "/save.v1.TokenService/CreateEditor"
-	TokenService_GetEditor_FullMethodName    = "/save.v1.TokenService/GetEditor"
-	TokenService_DeleteEditor_FullMethodName = "/save.v1.TokenService/DeleteEditor"
+	SaveService_CreateEditor_FullMethodName = "/save.v1.SaveService/CreateEditor"
+	SaveService_GetEditor_FullMethodName    = "/save.v1.SaveService/GetEditor"
+	SaveService_DeleteEditor_FullMethodName = "/save.v1.SaveService/DeleteEditor"
 )
 
-// TokenServiceClient is the client API for TokenService service.
+// SaveServiceClient is the client API for SaveService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type TokenServiceClient interface {
+type SaveServiceClient interface {
 	CreateEditor(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error)
 	GetEditor(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error)
 	DeleteEditor(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error)
 }
 
-type tokenServiceClient struct {
+type saveServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewTokenServiceClient(cc grpc.ClientConnInterface) TokenServiceClient {
-	return &tokenServiceClient{cc}
+func NewSaveServiceClient(cc grpc.ClientConnInterface) SaveServiceClient {
+	return &saveServiceClient{cc}
 }
 
-func (c *tokenServiceClient) CreateEditor(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error) {
+func (c *saveServiceClient) CreateEditor(ctx context.Context, in *CreateSaveRequest, opts ...grpc.CallOption) (*CreateSaveResponse, error) {
 	out := new(CreateSaveResponse)
-	err := c.cc.Invoke(ctx, TokenService_CreateEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_CreateEditor_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tokenServiceClient) GetEditor(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error) {
+func (c *saveServiceClient) GetEditor(ctx context.Context, in *GetSaveRequest, opts ...grpc.CallOption) (*GetSaveResponse, error) {
 	out := new(GetSaveResponse)
-	err := c.cc.Invoke(ctx, TokenService_GetEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_GetEditor_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *tokenServiceClient) DeleteEditor(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error) {
+func (c *saveServiceClient) DeleteEditor(ctx context.Context, in *DeleteSaveRequest, opts ...grpc.CallOption) (*DeleteSaveResponse, error) {
 	out := new(DeleteSaveResponse)
-	err := c.cc.Invoke(ctx, TokenService_DeleteEditor_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, SaveService_DeleteEditor_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// TokenServiceServer is the server API for TokenService service.
-// All implementations must embed UnimplementedTokenServiceServer
+// SaveServiceServer is the server API for SaveService service.
+// All implementations must embed UnimplementedSaveServiceServer
 // for forward compatibility
-type TokenServiceServer interface {
+type SaveServiceServer interface {
 	CreateEditor(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error)
 	GetEditor(context.Context, *GetSaveRequest) (*GetSaveResponse, error)
 	DeleteEditor(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error)
-	mustEmbedUnimplementedTokenServiceServer()
+	mustEmbedUnimplementedSaveServiceServer()
 }
 
-// UnimplementedTokenServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedTokenServiceServer struct {
+// UnimplementedSaveServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSaveServiceServer struct {
 }
 
-func (UnimplementedTokenServiceServer) CreateEditor(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error) {
+func (UnimplementedSaveServiceServer) CreateEditor(context.Context, *CreateSaveRequest) (*CreateSaveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEditor not implemented")
 }
-func (UnimplementedTokenServiceServer) GetEditor(context.Context, *GetSaveRequest) (*GetSaveResponse, error) {
+func (UnimplementedSaveServiceServer) GetEditor(context.Context, *GetSaveRequest) (*GetSaveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEditor not implemented")
 }
-func (UnimplementedTokenServiceServer) DeleteEditor(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error) {
+func (UnimplementedSaveServiceServer) DeleteEditor(context.Context, *DeleteSaveRequest) (*DeleteSaveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEditor not implemented")
 }
-func (UnimplementedTokenServiceServer) mustEmbedUnimplementedTokenServiceServer() {}
+func (UnimplementedSaveServiceServer) mustEmbedUnimplementedSaveServiceServer() {}
 
-// UnsafeTokenServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to TokenServiceServer will
+// UnsafeSaveServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SaveServiceServer will
 // result in compilation errors.
-type UnsafeTokenServiceServer interface {
-	mustEmbedUnimplementedTokenServiceServer()
+type UnsafeSaveServiceServer interface {
+	mustEmbedUnimplementedSaveServiceServer()
 }
 
-func RegisterTokenServiceServer(s grpc.ServiceRegistrar, srv TokenServiceServer) {
-	s.RegisterService(&TokenService_ServiceDesc, srv)
+func RegisterSaveServiceServer(s grpc.ServiceRegistrar, srv SaveServiceServer) {
+	s.RegisterService(&SaveService_ServiceDesc, srv)
 }
 
-func _TokenService_CreateEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_CreateEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TokenServiceServer).CreateEditor(ctx, in)
+		return srv.(SaveServiceServer).CreateEditor(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TokenService_CreateEditor_FullMethodName,
+		FullMethod: SaveService_CreateEditor_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TokenServiceServer).CreateEditor(ctx, req.(*CreateSaveRequest))
+		return srv.(SaveServiceServer).CreateEditor(ctx, req.(*CreateSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TokenService_GetEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_GetEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TokenServiceServer).GetEditor(ctx, in)
+		return srv.(SaveServiceServer).GetEditor(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TokenService_GetEditor_FullMethodName,
+		FullMethod: SaveService_GetEditor_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TokenServiceServer).GetEditor(ctx, req.(*GetSaveRequest))
+		return srv.(SaveServiceServer).GetEditor(ctx, req.(*GetSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TokenService_DeleteEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _SaveService_DeleteEditor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSaveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TokenServiceServer).DeleteEditor(ctx, in)
+		return srv.(SaveServiceServer).DeleteEditor(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: TokenService_DeleteEditor_FullMethodName,
+		FullMethod: SaveService_DeleteEditor_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TokenServiceServer).DeleteEditor(ctx, req.(*DeleteSaveRequest))
+		return srv.(SaveServiceServer).DeleteEditor(ctx, req.(*DeleteSaveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// TokenService_ServiceDesc is the grpc.ServiceDesc for TokenService service.
+// SaveService_ServiceDesc is the grpc.ServiceDesc for SaveService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var TokenService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "save.v1.TokenService",
-	HandlerType: (*TokenServiceServer)(nil),
+var SaveService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "save.v1.SaveService",
+	HandlerType: (*SaveServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateEditor",
-			Handler:    _TokenService_CreateEditor_Handler,
+			Handler:    _SaveService_CreateEditor_Handler,
 		},
 		{
 			MethodName: "GetEditor",
-			Handler:    _TokenService_GetEditor_Handler,
+			Handler:    _SaveService_GetEditor_Handler,
 		},
 		{
 			MethodName: "DeleteEditor",
-			Handler:    _TokenService_DeleteEditor_Handler,
+			Handler:    _SaveService_DeleteEditor_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

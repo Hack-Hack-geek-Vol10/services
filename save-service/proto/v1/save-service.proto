@@ -10,7 +10,7 @@ package save.v1;
 // rpc GetToken (GetTokenRequest) returns (GetTokenResponse);
 //  ↑　　　↑　　　　　　↑　　　　　　　　　　　　　↑
 // 呪い　メソッド名　　リクエスト型　　　　　レスポンス型
-service TokenService {
+service SaveService {
   rpc CreateEditor (CreateSaveRequest) returns (CreateSaveResponse);
   rpc GetEditor (GetSaveRequest) returns (GetSaveResponse);
   rpc DeleteEditor (DeleteSaveRequest) returns (DeleteSaveResponse);
