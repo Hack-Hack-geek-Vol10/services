@@ -22,7 +22,10 @@ func NewSaveService(saveRepo infra.SaveRepo) save.SaveServiceServer {
 
 func (t *saveService) CreateSave(ctx context.Context, arg *save.CreateSaveRequest) (*save.CreateSaveResponse, error) {
 	param := domain.CreateSaveParam{
-		SaveID: uuid.New().String(),
+		SaveID:    uuid.New().String(),
+		ProjectID: arg.ProjectId,
+		Editor:    arg.Editor,
+		Object:    arg.Object,
 	}
 
 	err := t.saveRepo.Create(ctx, param)
@@ -31,13 +34,13 @@ func (t *saveService) CreateSave(ctx context.Context, arg *save.CreateSaveReques
 	}
 
 	return &save.CreateSaveResponse{
-		Save: param.SaveID,
+		SaveId: param.SaveID,
 	}, nil
 }
 
 func (t *saveService) GetSave(ctx context.Context, arg *save.GetSaveRequest) (*save.GetSaveResponse, error) {
 	param := domain.GetSaveParam{
-		SaveID: arg.Save,
+		ProjectID: arg.ProjectId,
 	}
 	saveInfo, err := t.saveRepo.Get(ctx, param)
 	if err != nil {
