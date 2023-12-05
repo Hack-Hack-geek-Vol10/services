@@ -83,7 +83,7 @@ func main() {
 		if err != nil {
 			ctx.AbortWithError(500, err)
 		}
-		if err := m.Up(); err != nil {
+		if err := m.Down(); err != nil {
 			ctx.AbortWithError(500, err)
 		}
 		ctx.JSON(200, "success migrate")
