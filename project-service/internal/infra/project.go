@@ -24,9 +24,13 @@ func NewProjectRepo(db *sql.DB) ProjectRepo {
 	return &projectRepo{db: db}
 }
 
+const (
+	DefaultImage = "https://firebasestorage.googleapis.com/v0/b/geek-vol10.appspot.com/o/whiteout.png?alt=media&token=604eedd5-1005-4234-abfd-cb76c594ec28"
+)
+
 func (r *projectRepo) Create(ctx context.Context, param domain.CreateProjectParam) (*domain.Project, error) {
 	const query = `INSERT INTO projects (project_id,title,last_image) VALUES ($1,$2,$3) RETURNING project_id,title,last_image`
-	row := r.db.QueryRowContext(ctx, query, param.ProjectID, param.Title, "")
+	row := r.db.QueryRowContext(ctx, query, param.ProjectID, param.Title, DefaultImage)
 	var info domain.Project
 	if err := row.Scan(&info.ProjectID, &info.Title, &info.LastImage); err != nil {
 		return nil, err
