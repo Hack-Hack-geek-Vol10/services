@@ -3,6 +3,7 @@ package infra
 import (
 	"context"
 	"database/sql"
+	"log"
 
 	"github.com/schema-creator/services/project-service/internal/domain"
 )
@@ -35,6 +36,7 @@ func (r *projectRepo) Create(ctx context.Context, param domain.CreateProjectPara
 	if err := row.Scan(&info.ProjectID, &info.Title, &info.LastImage); err != nil {
 		return nil, err
 	}
+	log.Println(info)
 	return &info, nil
 
 }
