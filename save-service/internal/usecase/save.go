@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	save "github.com/schema-creator/services/save-service/api/v1"
@@ -26,6 +27,7 @@ func (t *saveService) CreateSave(ctx context.Context, arg *save.CreateSaveReques
 		ProjectID: arg.ProjectId,
 		Editor:    arg.Editor,
 		Object:    arg.Object,
+		CreatedAt: time.Now().String(),
 	}
 
 	err := t.saveRepo.Create(ctx, param)
@@ -49,6 +51,8 @@ func (t *saveService) GetSave(ctx context.Context, arg *save.GetSaveRequest) (*s
 
 	return &save.GetSaveResponse{
 		SaveId: saveInfo.SaveID,
+		Editor: saveInfo.Editor,
+		Object: saveInfo.Object,
 	}, nil
 }
 

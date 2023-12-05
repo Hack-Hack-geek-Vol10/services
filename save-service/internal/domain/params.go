@@ -5,6 +5,7 @@ type CreateSaveParam struct {
 	ProjectID string `json:"project_id"`
 	Editor    string `json:"editor"`
 	Object    string `json:"object"`
+	CreatedAt string `json:"created_at"`
 }
 
 type GetSaveParam struct {

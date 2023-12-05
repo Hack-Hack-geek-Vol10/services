@@ -22,17 +22,17 @@ func NewSaveRepo(db *sql.DB) SaveRepo {
 }
 
 func (s *saveRepo) Create(ctx context.Context, arg domain.CreateSaveParam) error {
-	const query = `INSERT INTO saves (save_id, project_id, editor, object) VALUES ($1,$2,$3,$4)`
-	row := s.db.QueryRowContext(ctx, query, arg.SaveID, arg.ProjectID, arg.Editor, arg.Object)
+	const query = `INSERT INTO saves (save_id, project_id, editor, object, created_at) VALUES ($1,$2,$3,$4,$5)`
+	row := s.db.QueryRowContext(ctx, query, arg.SaveID, arg.ProjectID, arg.Editor, arg.Object, arg.CreatedAt)
 
 	return row.Err()
 }
 
 func (s *saveRepo) Get(ctx context.Context, arg domain.GetSaveParam) (*domain.Save, error) {
-	const query = `SELECT save_id, editor, object, max(created_at) FROM saves WHERE save_id = $1`
+	const query = `SELECT save_id, editor, object, max(created_at) FROM saves WHERE project_id = $1 group by save_id`
 	row := s.db.QueryRowContext(ctx, query, arg.ProjectID)
 	var save domain.Save
-	if err := row.Scan(&save.SaveID, &save.SaveID, &save.ProjectID, &save.Editor, &save.Object, &save.CreatedAt); err != nil {
+	if err := row.Scan(&save.SaveID, &save.Editor, &save.Object, &save.CreatedAt); err != nil {
 		return nil, err
 	}
 	return &save, nil
