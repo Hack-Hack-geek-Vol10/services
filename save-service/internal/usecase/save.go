@@ -27,7 +27,7 @@ func (t *saveService) CreateSave(ctx context.Context, arg *save.CreateSaveReques
 		ProjectID: arg.ProjectId,
 		Editor:    arg.Editor,
 		Object:    arg.Object,
-		CreatedAt: time.Now().String(),
+		CreatedAt: time.Now(),
 	}
 
 	err := t.saveRepo.Create(ctx, param)
