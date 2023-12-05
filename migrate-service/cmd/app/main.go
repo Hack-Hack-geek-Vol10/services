@@ -55,21 +55,38 @@ func main() {
 		})
 	})
 
-	router.POST("/migrate", func(c *gin.Context) {
+	router.POST("/up", func(ctx *gin.Context) {
 		driver, err := postgres.WithInstance(db, &postgres.Config{})
 		if err != nil {
-			c.AbortWithError(500, err)
+			ctx.AbortWithError(500, err)
 		}
 		m, err := migrate.NewWithDatabaseInstance(
 			"file://migrations",
 			"postgres", driver)
 		if err != nil {
-			c.AbortWithError(500, err)
+			ctx.AbortWithError(500, err)
 		}
 		if err := m.Up(); err != nil {
-			c.AbortWithError(500, err)
+			ctx.AbortWithError(500, err)
 		}
-		c.JSON(200, "success migrate")
+		ctx.JSON(200, "success migrate")
+	})
+
+	router.POST("/down", func(ctx *gin.Context) {
+		driver, err := postgres.WithInstance(db, &postgres.Config{})
+		if err != nil {
+			ctx.AbortWithError(500, err)
+		}
+		m, err := migrate.NewWithDatabaseInstance(
+			"file://migrations",
+			"postgres", driver)
+		if err != nil {
+			ctx.AbortWithError(500, err)
+		}
+		if err := m.Up(); err != nil {
+			ctx.AbortWithError(500, err)
+		}
+		ctx.JSON(200, "success migrate")
 	})
 
 	server.Run(router)
