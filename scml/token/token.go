@@ -19,8 +19,7 @@ const (
 
 	// IDENT は識別子（add, foobar, x, y, ...)
 	IDENT = "IDENT"
-
-	TYPES = "TYPES"
+	INT   = "INT"
 
 	COMMENT = "//"
 	// LBRACE は左中括弧
@@ -33,6 +32,8 @@ const (
 	RBRACKET = "]"
 	// COLON はコロン（:）
 	COLON = ":"
+	// camma はカンマ（,）
+	CAMMA = ","
 
 	PRIMARY_KEY = "pk"
 	UNIQUE      = "uq"
@@ -53,7 +54,7 @@ var keywords = map[string]TokenType{
 	"pk":        PRIMARY_KEY,
 	"uq":        UNIQUE,
 	"nn":        NOT_NULL,
-	"incliment": INCREMENT,
+	"increment": INCREMENT,
 }
 
 func LookupIdent(ident string) TokenType {
