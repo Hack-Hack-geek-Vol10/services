@@ -21,21 +21,48 @@ func NewMemberService(memberRepo infra.MemberRepo) member.MemberServer {
 }
 
 func (m *memberService) CreateMember(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
-	result, err := m.memberRepo.Create(ctx, domain.CreateMemberParam{
-		ProjectID: in.ProjectId,
-		UserID:    in.UserId,
-		Authority: domain.Authority(in.Authority),
-	})
-
+	var (
+		result *domain.ProjectMember
+		err    error
+	)
+	members, err := m.memberRepo.ReadAll(ctx, in.ProjectId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
+
+	if isExitsMember(members, in.UserId) {
+		result, err = m.memberRepo.UpdateAuthority(ctx, domain.UpdateAuthorityParam{
+			ProjectID: in.ProjectId,
+			UserID:    in.UserId,
+			Authority: domain.Authority(in.Authority),
+		})
+	} else {
+		result, err = m.memberRepo.Create(ctx, domain.CreateMemberParam{
+			ProjectID: in.ProjectId,
+			UserID:    in.UserId,
+			Authority: domain.Authority(in.Authority),
+		})
+	}
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
 	return &member.MemberResponse{
 		ProjectId: result.ProjectID,
 		UserId:    result.UserID,
 		Authority: member.Auth(member.Auth_value[string(result.Authority)]),
 	}, nil
+}
+
+func isExitsMember(members []*domain.ProjectMember, userId string) bool {
+	for _, mem := range members {
+		if mem.UserID == userId {
+			return true
+		}
+	}
+	return false
 }
 
 func (m *memberService) GetMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
