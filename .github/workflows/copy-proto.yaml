@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - develop
-    paths:
-      # ①新しくサービスが増えたらこの部分を追加する
-      - 'user-service/api/**'
-      - 'member-service/api/**'
-      - 'image-service/api/**'
-      - 'project-service/api/**'
-      - 'token-service/api/**'
-
+    # paths:
+    #   # ①新しくサービスが増えたらこの部分を追加する
+    #   - 'user-service/api/**'
+    #   - 'member-service/api/**'
+    #   - 'image-service/api/**'
+    #   - 'project-service/api/**'
+    #   - 'token-service/api/**'
+    #   - 'save-service/api/**'
       
 jobs:
   collect-diff:
@@ -26,7 +26,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name:
+      # ②新しくサービスが増えたらこの部分を追加する
+      - name: collect diff
         id: diff
         run: |
           mkdir -p $HOME/service/user-service
@@ -43,6 +44,9 @@ jobs:
 
           mkdir -p $HOME/service/token-service
           cp -r token-service/api/* $HOME/service/token-service
+        
+          mkdir -p $HOME/service/save-service
+          cp -r save-service/api/* $HOME/service/save-service 
 
       - name: Checkout BFF repository
         uses: actions/checkout@v3
