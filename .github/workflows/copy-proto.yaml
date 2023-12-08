@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - develop
-    # paths:
-    #   # ①新しくサービスが増えたらこの部分を追加する
-    #   - 'user-service/api/**'
-    #   - 'member-service/api/**'
-    #   - 'image-service/api/**'
-    #   - 'project-service/api/**'
-    #   - 'token-service/api/**'
-    #   - 'save-service/api/**'
+    paths:
+      # ①新しくサービスが増えたらこの部分を追加する
+      - 'user-service/api/**'
+      - 'member-service/api/**'
+      - 'image-service/api/**'
+      - 'project-service/api/**'
+      - 'token-service/api/**'
+      - 'save-service/api/**'
       
 jobs:
   collect-diff:
