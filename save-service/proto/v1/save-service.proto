@@ -7,10 +7,7 @@ package save.v1;
 // service ってのが、gRPCサービスのハンドラとしての役割を果たす
 // ここには、gRPCサービスのメソッドを定義する
 // 書き方例
-// rpc GetToken (GetTokenRequest) returns (GetTokenResponse);
-//  ↑　　　↑　　　　　　↑　　　　　　　　　　　　　↑
-// 呪い　メソッド名　　リクエスト型　　　　　レスポンス型
-service SaveService {
+service Save {
   rpc CreateSave (CreateSaveRequest) returns (CreateSaveResponse);
   rpc GetSave (GetSaveRequest) returns (GetSaveResponse);
   rpc DeleteSave (DeleteSaveRequest) returns (DeleteSaveResponse);
@@ -19,9 +16,6 @@ service SaveService {
 // リクエスト, レスポンスの型を定義する
 // ここで定義した型は、gRPCサービスのメソッドの引数や戻り値として使える
 // 書き方例
-// まじない　　型名
-// 　↓   　　　　↓
-// https://qiita.com/yukina-ge/items/98fe190cef2024d45fbd
 
 message CreateSaveRequest {
   string project_id = 1;
