@@ -5,7 +5,7 @@ services:
     ports:
       - 8081:8081
     environment:
-      - SERVER_ADDR=:8081
+      - SERVER_ADDR=8081
       - PSQL_HOST=vol10
       - PSQL_PORT=5432
       - PSQL_USER=postgres
@@ -24,7 +24,7 @@ services:
     ports:
       - 8082:8082
     environment:
-      - SERVER_ADDR=:8082
+      - SERVER_ADDR=8082
       - PSQL_HOST=vol10
       - PSQL_PORT=5432
       - PSQL_USER=postgres
@@ -41,7 +41,7 @@ services:
     ports:
       - 8083:8083
     environment:
-      - SERVER_ADDR=:8083
+      - SERVER_ADDR=8083
       - FIREBASE_BUCKET=geek-vol10.appspot.com
     networks:
       - vol10-networks
@@ -52,7 +52,7 @@ services:
     ports:
       - 8084:8084
     environment:
-      - SERVER_ADDR=:8084
+      - SERVER_ADDR=8084
       - PSQL_HOST=vol10
       - PSQL_PORT=5432
       - PSQL_USER=postgres
@@ -66,12 +66,31 @@ services:
       - vol10-networks 
     depends_on:
       - vol10
+  token-service:
+    build: ./token-service
+    ports:
+      - 8085:8085
+    environment:
+      - SERVER_ADDR=8085
+      - PSQL_HOST=vol10
+      - PSQL_PORT=5432
+      - PSQL_USER=postgres
+      - PSQL_PASSWORD=postgres
+      - PSQL_DBNAME=vol10
+      - PSQL_SSLMODE=disable
+      - PSQL_CONNECT_TIMEOUT=10
+      - PSQL_CONNECT_WAIT_TIME=10
+      - PSQL_CONNECT_ATTEMPTS=3
+    networks:
+      - vol10-networks
+    depends_on:
+      - vol10
   save-service:
     build: ./save-service
     ports:
       - 8086:8086
     environment:
-      - SERVER_ADDR=:8086
+      - SERVER_ADDR=8086
       - PSQL_HOST=vol10
       - PSQL_PORT=5432
       - PSQL_USER=postgres
