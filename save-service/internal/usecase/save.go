@@ -11,11 +11,11 @@ import (
 )
 
 type saveService struct {
-	save.UnimplementedSaveServiceServer
+	save.UnimplementedSaveServer
 	saveRepo infra.SaveRepo
 }
 
-func NewSaveService(saveRepo infra.SaveRepo) save.SaveServiceServer {
+func NewSaveService(saveRepo infra.SaveRepo) save.SaveServer {
 	return &saveService{
 		saveRepo: saveRepo,
 	}

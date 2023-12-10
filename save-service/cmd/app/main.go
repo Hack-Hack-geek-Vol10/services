@@ -50,7 +50,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	token.RegisterSaveServiceServer(s, usecase.NewSaveService(infra.NewSaveRepo(db)))
+	token.RegisterSaveServer(s, usecase.NewSaveService(infra.NewSaveRepo(db)))
 
 	reflection.Register(s)
 

@@ -66,6 +66,25 @@ services:
       - vol10-networks 
     depends_on:
       - vol10
+  save-service:
+    build: ./save-service
+    ports:
+      - 8086:8086
+    environment:
+      - SERVER_ADDR=:8086
+      - PSQL_HOST=vol10
+      - PSQL_PORT=5432
+      - PSQL_USER=postgres
+      - PSQL_PASSWORD=postgres
+      - PSQL_DBNAME=vol10
+      - PSQL_SSLMODE=disable
+      - PSQL_CONNECT_TIMEOUT=10
+      - PSQL_CONNECT_WAIT_TIME=10
+      - PSQL_CONNECT_ATTEMPTS=3
+    networks:
+      - vol10-networks
+    depends_on:
+      - vol10
   vol10:
     image: postgres:16-alpine
     container_name: vol10
