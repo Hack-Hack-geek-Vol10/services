@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/schema-creator/services/user-service/internal/domain"
 )
 
@@ -21,6 +22,7 @@ func NewUserRepo(db *sql.DB) UserRepo {
 }
 
 func (r *userRepo) Create(ctx context.Context, arg domain.CreateUserParams) (*domain.User, error) {
+	defer newrelic.FromContext(ctx).StartSegment("postgres-Create").End()
 	const query = `INSERT INTO users (user_id, name, email)VALUES($1, $2, $3) RETURNING user_id, name, email`
 
 	row := r.db.QueryRowContext(ctx, query, arg.UserID, arg.Name, arg.Email)
@@ -37,6 +39,7 @@ func (r *userRepo) Create(ctx context.Context, arg domain.CreateUserParams) (*do
 }
 
 func (r *userRepo) ReadOne(ctx context.Context, userID string) (*domain.User, error) {
+	defer newrelic.FromContext(ctx).StartSegment("postgres-ReadOne").End()
 	const query = `SELECT user_id, name, email FROM users WHERE user_id = $1 AND is_delete = false`
 
 	row := r.db.QueryRow(query, userID)

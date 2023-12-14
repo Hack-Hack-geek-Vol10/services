@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	user "github.com/schema-creator/services/user-service/api/v1"
 	"github.com/schema-creator/services/user-service/internal/domain"
 	"github.com/schema-creator/services/user-service/internal/infra"
@@ -11,6 +12,7 @@ import (
 
 type userService struct {
 	user.UnimplementedUserServer
+
 	userRepo infra.UserRepo
 }
 
@@ -21,6 +23,8 @@ func NewUserService(userRepo infra.UserRepo) user.UserServer {
 }
 
 func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams) (*user.UserDetail, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-CreateUser").End()
+
 	result, err := s.userRepo.Create(ctx, domain.CreateUserParams{
 		UserID: arg.UserId,
 		Name:   arg.Name,
@@ -39,6 +43,8 @@ func (s *userService) CreateUser(ctx context.Context, arg *user.CreateUserParams
 }
 
 func (s *userService) GetUser(ctx context.Context, arg *user.GetUserParams) (*user.UserDetail, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-GetUser").End()
+
 	userInfo, err := s.userRepo.ReadOne(ctx, arg.UserId)
 	if err != nil {
 		log.Println(err)
