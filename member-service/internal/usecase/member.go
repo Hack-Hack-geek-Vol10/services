@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	member "github.com/schema-creator/services/member-service/api/v1"
 	"github.com/schema-creator/services/member-service/internal/domain"
 	"github.com/schema-creator/services/member-service/internal/infra"
@@ -21,6 +22,7 @@ func NewMemberService(memberRepo infra.MemberRepo) member.MemberServer {
 }
 
 func (m *memberService) CreateMember(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-CreateMember").End()
 	var (
 		result *domain.ProjectMember
 		err    error
@@ -66,6 +68,7 @@ func isExitsMember(members []*domain.ProjectMember, userId string) bool {
 }
 
 func (m *memberService) GetMembers(ctx context.Context, in *member.GetMembersRequest) (*member.ListMembers, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-GetMembers").End()
 	members, err := m.memberRepo.ReadAll(ctx, in.ProjectId)
 	if err != nil {
 		log.Println(err)
@@ -84,6 +87,7 @@ func (m *memberService) GetMembers(ctx context.Context, in *member.GetMembersReq
 	return &listMembers, nil
 }
 func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRequest) (*member.MemberResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-UpdateAuthority").End()
 	result, err := m.memberRepo.UpdateAuthority(ctx, domain.UpdateAuthorityParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
@@ -102,6 +106,7 @@ func (m *memberService) UpdateAuthority(ctx context.Context, in *member.MemberRe
 }
 
 func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMemberRequest) (*member.DeleteMemberResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-DeleteMember").End()
 	if err := m.memberRepo.Delete(ctx, domain.DeleteMemberParam{
 		ProjectID: in.ProjectId,
 		UserID:    in.UserId,
@@ -116,6 +121,7 @@ func (m *memberService) DeleteMember(ctx context.Context, in *member.DeleteMembe
 }
 
 func (m *memberService) DeleteAllMembers(ctx context.Context, in *member.DeleteAllMemberRequest) (*member.DeleteMemberResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-DeleteAllMembers").End()
 	if err := m.memberRepo.DeleteAll(ctx, in.ProjectId); err != nil {
 		log.Println(err)
 		return nil, err

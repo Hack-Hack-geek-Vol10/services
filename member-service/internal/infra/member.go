@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/schema-creator/services/member-service/internal/domain"
 )
 
@@ -26,6 +27,7 @@ func NewMemberRepo(db *sql.DB) MemberRepo {
 }
 
 func (m *memberRepo) Create(ctx context.Context, arg domain.CreateMemberParam) (*domain.ProjectMember, error) {
+	defer newrelic.FromContext(ctx).StartSegment("memberRepo-Create").End()
 	const query = `INSERT INTO project_members (project_id,user_id,authority) VALUES ($1,$2,$3) RETURNING project_id,user_id,authority`
 	row := m.db.QueryRowContext(ctx, query, arg.ProjectID, arg.UserID, arg.Authority)
 	var projectMember domain.ProjectMember
@@ -36,6 +38,7 @@ func (m *memberRepo) Create(ctx context.Context, arg domain.CreateMemberParam) (
 }
 
 func (m *memberRepo) ReadAll(ctx context.Context, projectID string) ([]*domain.ProjectMember, error) {
+	defer newrelic.FromContext(ctx).StartSegment("memberRepo-ReadAll").End()
 	const query = `SELECT project_id,user_id,authority FROM project_members WHERE project_id = $1`
 	row, err := m.db.QueryContext(ctx, query, projectID)
 	if err != nil {
@@ -53,6 +56,7 @@ func (m *memberRepo) ReadAll(ctx context.Context, projectID string) ([]*domain.P
 }
 
 func (m *memberRepo) UpdateAuthority(ctx context.Context, arg domain.UpdateAuthorityParam) (*domain.ProjectMember, error) {
+	defer newrelic.FromContext(ctx).StartSegment("memberRepo-UpdateAuthority").End()
 	const query = `UPDATE project_members SET authority = $1 WHERE project_id = $2 AND user_id = $3 RETURNING project_id,user_id,authority`
 	row := m.db.QueryRowContext(ctx, query, arg.Authority, arg.ProjectID, arg.UserID)
 	var projectMember domain.ProjectMember
@@ -63,12 +67,14 @@ func (m *memberRepo) UpdateAuthority(ctx context.Context, arg domain.UpdateAutho
 }
 
 func (m *memberRepo) Delete(ctx context.Context, arg domain.DeleteMemberParam) error {
+	defer newrelic.FromContext(ctx).StartSegment("memberRepo-Delete").End()
 	const query = `DELETE FROM project_members WHERE project_id = $1 AND user_id = $2`
 	row := m.db.QueryRowContext(ctx, query, arg.ProjectID, arg.UserID)
 	return row.Err()
 }
 
 func (m *memberRepo) DeleteAll(ctx context.Context, projectID string) error {
+	defer newrelic.FromContext(ctx).StartSegment("memberRepo-DeleteAll").End()
 	const query = `DELETE FROM project_members WHERE project_id = $1`
 	row := m.db.QueryRowContext(ctx, query, projectID)
 	return row.Err()
