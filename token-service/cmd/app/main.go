@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/murasame29/db-conn/sqldb/postgres"
+	"github.com/newrelic/go-agent/v3/integrations/nrgrpc"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	token "github.com/schema-creator/services/token-service/api/v1"
 	"github.com/schema-creator/services/token-service/cmd/config"
 	"github.com/schema-creator/services/token-service/internal/infra"
@@ -49,7 +51,16 @@ func main() {
 		panic(err)
 	}
 
-	s := grpc.NewServer()
+	app, err := newrelic.NewApplication(
+		newrelic.ConfigFromEnvironment(),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s := grpc.NewServer(
+		grpc.UnaryInterceptor(nrgrpc.UnaryServerInterceptor(app)),
+	)
 	token.RegisterTokenServer(s, usecase.NewTokenService(infra.NewTokenRepo(db)))
 
 	reflection.Register(s)

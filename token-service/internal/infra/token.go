@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/schema-creator/services/token-service/internal/domain"
 )
 
@@ -22,6 +23,7 @@ func NewTokenRepo(db *sql.DB) TokenRepo {
 }
 
 func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) error {
+	defer newrelic.FromContext(ctx).StartSegment("tokenRepo-Create").End()
 	const query = `INSERT INTO tokens (token_id, project_id, authority) VALUES ($1,$2,$3)`
 
 	row := t.db.QueryRowContext(ctx, query, arg.TokenID, arg.ProjectID, arg.Authority)
@@ -30,6 +32,8 @@ func (t *tokenRepo) Create(ctx context.Context, arg domain.CreateTokenParam) err
 }
 
 func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.Token, error) {
+	defer newrelic.FromContext(ctx).StartSegment("tokenRepo-Get").End()
+
 	const query = `SELECT token_id, project_id, authority FROM tokens WHERE token_id = $1`
 	row := t.db.QueryRowContext(ctx, query, arg.TokenID)
 	var token domain.Token
@@ -40,6 +44,8 @@ func (t *tokenRepo) Get(ctx context.Context, arg domain.GetTokenParam) (*domain.
 }
 
 func (t *tokenRepo) Delete(ctx context.Context, arg domain.DeleteTokenParam) error {
+	defer newrelic.FromContext(ctx).StartSegment("tokenRepo-Delete").End()
+
 	const query = `DELETE FROM tokens WHERE project_id = $1`
 	row, err := t.db.ExecContext(ctx, query, arg.ProjectID)
 	if err != nil {

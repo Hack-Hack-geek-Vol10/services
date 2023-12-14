@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/google/uuid"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	token "github.com/schema-creator/services/token-service/api/v1"
 	"github.com/schema-creator/services/token-service/internal/domain"
 	"github.com/schema-creator/services/token-service/internal/infra"
@@ -22,6 +23,8 @@ func NewTokenService(tokenRepo infra.TokenRepo) token.TokenServer {
 }
 
 func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRequest) (*token.CreateTokenResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-CreateToken").End()
+
 	param := domain.CreateTokenParam{
 		TokenID:   uuid.New().String(),
 		ProjectID: arg.ProjectId,
@@ -40,6 +43,8 @@ func (t *tokenService) CreateToken(ctx context.Context, arg *token.CreateTokenRe
 }
 
 func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest) (*token.GetTokenResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-GetToken").End()
+
 	param := domain.GetTokenParam{
 		TokenID: arg.Token,
 	}
@@ -57,6 +62,8 @@ func (t *tokenService) GetToken(ctx context.Context, arg *token.GetTokenRequest)
 }
 
 func (t *tokenService) DeleteToken(ctx context.Context, arg *token.DeleteTokenRequest) (*token.DeleteTokenResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-DeleteToken").End()
+
 	param := domain.DeleteTokenParam{
 		ProjectID: arg.ProjectId,
 	}
