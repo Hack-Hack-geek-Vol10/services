@@ -20,7 +20,7 @@ service Save {
 message CreateSaveRequest {
   string project_id = 1;
   string editor = 2;
-  string object = 3;
+  bytes object = 3;
 }
 
 message CreateSaveResponse {
@@ -34,7 +34,7 @@ message GetSaveRequest {
 message GetSaveResponse {
   string save_id = 1;
   string editor = 2;
-  string object = 3;
+  bytes object = 3;
 }
 
 message DeleteSaveRequest {
