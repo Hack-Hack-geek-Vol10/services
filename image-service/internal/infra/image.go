@@ -7,6 +7,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/schema-creator/services/image-service/internal/domain"
 )
 
@@ -26,7 +27,7 @@ func NewImageRepo(app *firebase.App) ImageRepo {
 }
 
 func (i *imageRepo) UploadImage(ctx context.Context, arg *domain.UploadImageParam) (string, string, error) {
-
+	defer newrelic.FromContext(ctx).StartSegment("imageRepo-Upload").End()
 	client, err := i.app.Storage(context.Background())
 	if err != nil {
 		return "", "", fmt.Errorf("storage.Client: %v", err)
@@ -59,6 +60,7 @@ func (i *imageRepo) UploadImage(ctx context.Context, arg *domain.UploadImagePara
 }
 
 func (i *imageRepo) DeleteImage(ctx context.Context, key string) error {
+	defer newrelic.FromContext(ctx).StartSegment("imageRepo-Delete").End()
 	client, err := i.app.Storage(context.Background())
 	if err != nil {
 		return fmt.Errorf("storage.Client: %v", err)

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	image "github.com/schema-creator/services/image-service/api/v1"
 	"github.com/schema-creator/services/image-service/internal/domain"
 	"github.com/schema-creator/services/image-service/internal/infra"
@@ -33,6 +34,7 @@ func NewImageService(imageRepo infra.ImageRepo) image.ImageServer {
 }
 
 func (i *imageService) UploadImage(ctx context.Context, arg *image.UploadImageRequest) (*image.UploadImageResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-UploadImage").End()
 	switch arg.ContentType {
 	case ContentTypePng:
 		arg.Key = arg.Key + ".png"
@@ -70,6 +72,7 @@ func (i *imageService) UploadImage(ctx context.Context, arg *image.UploadImageRe
 }
 
 func (i *imageService) DeleteImage(ctx context.Context, arg *image.DeleteImageRequest) (*image.DeleteImageResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-DeleteImage").End()
 	if arg.Key == "" {
 		return nil, status.Error(http.StatusBadRequest, "invalid key")
 	}

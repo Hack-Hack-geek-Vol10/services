@@ -7,6 +7,8 @@ require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/joho/godotenv v1.5.1
+	github.com/newrelic/go-agent/v3 v3.28.1
+	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.4.1
 	google.golang.org/api v0.152.0
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
@@ -25,7 +27,9 @@ require (
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
+	github.com/newrelic/csec-go-agent v0.5.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
+	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.15.0 // indirect
 	golang.org/x/net v0.18.0 // indirect
 	golang.org/x/oauth2 v0.14.0 // indirect
@@ -38,4 +42,5 @@ require (
 	google.golang.org/genproto v0.0.0-20231106174013-bbf56f31fb17 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

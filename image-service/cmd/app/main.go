@@ -8,6 +8,8 @@ import (
 	"os/signal"
 
 	firebase "firebase.google.com/go"
+	"github.com/newrelic/go-agent/v3/integrations/nrgrpc"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	image "github.com/schema-creator/services/image-service/api/v1"
 	"github.com/schema-creator/services/image-service/cmd/config"
 	"github.com/schema-creator/services/image-service/internal/infra"
@@ -36,7 +38,16 @@ func main() {
 		panic(err)
 	}
 
-	s := grpc.NewServer()
+	nrapp, err := newrelic.NewApplication(
+		newrelic.ConfigFromEnvironment(),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s := grpc.NewServer(
+		grpc.UnaryInterceptor(nrgrpc.UnaryServerInterceptor(nrapp)),
+	)
 	image.RegisterImageServer(s, usecase.NewImageService(infra.NewImageRepo(app)))
 
 	reflection.Register(s)
