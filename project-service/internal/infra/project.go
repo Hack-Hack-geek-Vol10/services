@@ -40,7 +40,7 @@ func (r *projectRepo) Create(ctx context.Context, param domain.CreateProjectPara
 }
 
 func (r *projectRepo) ReadOne(ctx context.Context, projectID string) (*domain.Project, error) {
-	const query = `SELECT project_id,title,last_image FROM projects WHERE project_id = $1`
+	const query = `SELECT project_id,title,last_image FROM projects WHERE project_id = $1 AND is_delete = false`
 	row := r.db.QueryRowContext(ctx, query, projectID)
 	var info domain.Project
 	if err := row.Scan(&info.ProjectID, &info.Title, &info.LastImage); err != nil {
@@ -50,7 +50,7 @@ func (r *projectRepo) ReadOne(ctx context.Context, projectID string) (*domain.Pr
 }
 
 func (r *projectRepo) ReadAll(ctx context.Context, arg domain.ReadProjectsParam) ([]*domain.Project, error) {
-	const query = `SELECT projects.project_id, projects.title, projects.last_image FROM projects LEFT OUTER JOIN project_members ON projects.project_id = project_members.project_id WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`
+	const query = `SELECT projects.project_id, projects.title, projects.last_image FROM projects LEFT OUTER JOIN project_members ON projects.project_id = project_members.project_id WHERE user_id = $1 AND is_delete = false ORDER BY created_at DESC LIMIT $2 OFFSET $3`
 	rows, err := r.db.QueryContext(ctx, query, arg.UserID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (r *projectRepo) UpdateLastImage(ctx context.Context, projectID, lastImage 
 }
 
 func (r *projectRepo) Delete(ctx context.Context, projectID string) error {
-	const query = `DELETE FROM projects WHERE project_id = $1`
+	const query = `UPDATE projects SET is_delete = true WHERE project_id = $1`
 	_, err := r.db.ExecContext(ctx, query, projectID)
 	return err
 }
