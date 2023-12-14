@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/google/uuid"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	project "github.com/schema-creator/services/project-service/api/v1"
 	"github.com/schema-creator/services/project-service/internal/domain"
 	"github.com/schema-creator/services/project-service/internal/infra"
@@ -22,6 +23,7 @@ func NewProjectService(projectRepo infra.ProjectRepo) project.ProjectServer {
 }
 
 func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateProjectRequest) (*project.ProjectDetails, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-CreateProject").End()
 	if len(arg.Title) == 0 {
 		arg.Title = "untitled"
 	}
@@ -46,6 +48,7 @@ func (s *projectService) CreateProject(ctx context.Context, arg *project.CreateP
 }
 
 func (s *projectService) GetProject(ctx context.Context, arg *project.GetProjectRequest) (*project.ProjectDetails, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-GetProject").End()
 	projectInfo, err := s.projectRepo.ReadOne(ctx, arg.ProjectId)
 	if err != nil {
 		log.Println(err)
@@ -61,6 +64,7 @@ func (s *projectService) GetProject(ctx context.Context, arg *project.GetProject
 }
 
 func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProjectsRequest) (*project.ListProjectsResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-ListProjects").End()
 	if arg.Limit == 0 {
 		arg.Limit = 1000
 	}
@@ -96,6 +100,7 @@ func (s *projectService) ListProjects(ctx context.Context, arg *project.ListProj
 }
 
 func (s *projectService) UpdateTitle(ctx context.Context, arg *project.UpdateTitleRequest) (*project.ProjectDetails, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-UpdateTitle").End()
 	projectInfo, err := s.projectRepo.UpdateTitle(ctx, arg.ProjectId, arg.Title)
 	if err != nil {
 		log.Println(err)
@@ -111,6 +116,7 @@ func (s *projectService) UpdateTitle(ctx context.Context, arg *project.UpdateTit
 }
 
 func (s *projectService) UpdateImage(ctx context.Context, arg *project.UpdateImageRequest) (*project.ProjectDetails, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-UpdateImage").End()
 	projectInfo, err := s.projectRepo.UpdateLastImage(ctx, arg.ProjectId, arg.LastImage)
 	if err != nil {
 		log.Println(err)
@@ -126,6 +132,7 @@ func (s *projectService) UpdateImage(ctx context.Context, arg *project.UpdateIma
 }
 
 func (s *projectService) DeleteProject(ctx context.Context, arg *project.DeleteProjectRequest) (*project.DeleteProjectResponse, error) {
+	defer newrelic.FromContext(ctx).StartSegment("grpc-DeleteProject").End()
 	err := s.projectRepo.Delete(ctx, arg.ProjectId)
 	if err != nil {
 		log.Println(err)
