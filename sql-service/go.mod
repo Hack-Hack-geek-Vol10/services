@@ -1,4 +1,4 @@
-module github.com/Hack-Hack-geek-Vol10/backend
+module github.com/schema-creator/services/sql-service
 
 go 1.20
 
