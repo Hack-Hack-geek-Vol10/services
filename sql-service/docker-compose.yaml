@@ -1,0 +1,15 @@
+# mongoDB setup
+# version: '3'
+# services:
+#   mongo:
+#     image: mongo
+#     container_name: mongo
+#     restart: always
+#     ports:
+#       - 27017:27017
+#     environment:
+
+#       MONGO_INITDB_ROOT_USERNAME: mongo
+#       MONGO_INITDB_ROOT_PASSWORD: mongo
+#     volumes:
+#       - ./data:/data/db
