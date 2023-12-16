@@ -2,15 +2,16 @@ package main
 
 import (
 	"context"
+	"log"
+	"net"
+	"os"
+	"os/signal"
+	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/murasame29/db-conn/sqldb/postgres"
 	"github.com/schema-creator/services/sql-service/cmd/app/config"
-	"github.com/schema-creator/services/sql-service/internal/project/infrastruture/mongodb"
-	"github.com/schema-creator/services/sql-service/internal/project/interfaces/http"
-	userhttp "github.com/schema-creator/services/sql-service/internal/user/interfaces/http"
-	wshttp "github.com/schema-creator/services/sql-service/internal/websocket/interfaces/http"
-	"github.com/schema-creator/services/sql-service/pkg/logger"
-	"github.com/schema-creator/services/sql-service/pkg/mongo"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 // @title go-schema
@@ -19,24 +20,54 @@ import (
 // @contact.name murasame
 // @contact.email [fake]
 // @host localhost:8080
-// @BasePath /v1/
+
+func init() {
+	config.LoadEnv()
+}
+
 func main() {
-	l := logger.NewLogger(logger.DEBUG)
-	config.LoadEnv(l)
 
-	ctx := context.Background()
+	listener, err := net.Listen("tcp", ":"+config.Config.Server.ServerAddr)
+	if err != nil {
+		panic(err)
+	}
 
-	conn := mongo.NewConnection(l)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	conn := postgres.NewConnection(
+		config.Config.Database.User,
+		config.Config.Database.Password,
+		config.Config.Database.Host,
+		config.Config.Database.Port,
+		config.Config.Database.DBName,
+		config.Config.Database.SSLMode,
+		config.Config.Database.ConnectAttempts,
+		config.Config.Database.ConnectWaitTime,
+		config.Config.Database.ConnectBlocks,
+	)
 	defer conn.Close(ctx)
 
-	db, err := conn.Connection(config.Config.Mongo.Database)
+	db, err := conn.Connection()
 	if err != nil {
-		l.Error(err)
-		return
+		panic(err)
 	}
-	gin := gin.Default()
-	router := userhttp.NewUserRouter(gin, l, db)
-	http.NewProjectRouter(gin, l, mongodb.NewProjectRepository(db))
-	wshttp.NewWsRouter(gin, l, db)
-	router.Run(config.Config.Server.Addr)
+
+	s := grpc.NewServer()
+	token.RegisterSaveServer(s, usecase.NewSaveService(infra.NewSaveRepo(db)))
+
+	reflection.Register(s)
+
+	// 3. 作成したgRPCサーバーを、8080番ポートで稼働させる
+	go func() {
+		log.Printf("start gRPC server port: %v", config.Config.Server.ServerAddr)
+		s.Serve(listener)
+	}()
+
+	// 4.Ctrl+Cが入力されたらGraceful shutdownされるようにする
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("stopping gRPC server...")
+	s.GracefulStop()
 }
